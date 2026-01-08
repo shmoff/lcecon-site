@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://lcecon.ie/</loc></url>
+  <url><loc>https://lcecon.ie/notes/</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/</loc></url>
+  <url><loc>https://lcecon.ie/grinds/</loc></url>
+  <url><loc>https://lcecon.ie/contact/</loc></url>
+
+  <!-- PDFs (yes, you can include them) -->
+  <url><loc>https://lcecon.ie/notes/pdf/chapter-1-demand-supply.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/chapter-2-elasticity.pdf</loc></url>
+</urlset>
