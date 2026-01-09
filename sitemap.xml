@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Pages -->
   <url><loc>https://lcecon.ie/</loc></url>
   <url><loc>https://lcecon.ie/notes/</loc></url>
   <url><loc>https://lcecon.ie/worksheets/</loc></url>
   <url><loc>https://lcecon.ie/grinds/</loc></url>
   <url><loc>https://lcecon.ie/contact/</loc></url>
 
-  <!-- PDFs (yes, you can include them) -->
-  <url><loc>https://lcecon.ie/notes/pdf/chapter-1-demand-supply.pdf</loc></url>
-  <url><loc>https://lcecon.ie/notes/pdf/chapter-2-elasticity.pdf</loc></url>
+  <!-- Notes PDFs -->
+  <url><loc>https://lcecon.ie/notes/pdf/costs.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/economic-growth-and-development.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/economics-as-a-way-of-thinking.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/elasticity.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/employment.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/fiscal-policy-i.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/fiscal-policy-ii.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/globalisation.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/government-intervention.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/inflation-and-prices.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/market-failure.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/market-structures.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/national-income.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/scarcity-and-choice.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/sustainability.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/the-financial-sector.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/the-labour-market.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/the-market-economy.pdf</loc></url>
+  <url><loc>https://lcecon.ie/notes/pdf/trade.pdf</loc></url>
+
+  <!-- Worksheets PDFs -->
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-1-economics-as-a-way-of-thinking.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-4-the-market-economy.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-5-elasticity.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-6-costs.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-7-govt-intervention.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-8-market-structures.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-9-factors-of-production.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-10-market-failure.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-11-national-income.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-12-fiscal-policy.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-13-employment.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-14-inflation.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-16-economic-development.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-17-globalisation.pdf</loc></url>
+  <url><loc>https://lcecon.ie/worksheets/pdf/chapter-18-trade.pdf</loc></url>
 </urlset>
