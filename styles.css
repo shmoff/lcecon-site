@@ -92,6 +92,7 @@ body{
   font-style:normal;
   font-display:swap;
 }
+assets/fonts/lmroman/lmroman10-bold.woff2
 @font-face{
   font-family:"Latin Modern Roman";
   src:url("assets/fonts/lmroman/lmroman10-italic.woff2") format("woff2");
