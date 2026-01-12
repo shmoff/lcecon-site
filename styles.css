@@ -268,3 +268,62 @@ a:hover{ text-decoration:underline; }
   .strand{ padding: var(--s3); }
 }
 
+/* -----------------------------------------
+   Strand cards: 3 columns + centred content + centred last row
+   (Flexbox is best for centring incomplete final rows)
+------------------------------------------ */
+
+.strand__grid{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;      /* centres 1–2 cards on the last row */
+  align-items: stretch;
+  gap: var(--s3);
+}
+
+/* 3-column layout: make cards narrower */
+.strand__grid > .card{
+  /* 3 per row with two gaps */
+  flex: 0 1 calc((100% - (2 * var(--s3))) / 3);
+
+  /* sensible bounds so it doesn't get silly on huge/small screens */
+  min-width: 220px;
+  max-width: 320px;
+
+  /* centre text vertically + horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  /* consistent height so the grid looks tidy */
+  min-height: 140px;
+  padding: var(--s4);
+}
+
+/* tighten the typography so centred cards look intentional */
+.strand__grid > .card h3{
+  margin: 0 0 10px 0;
+}
+
+.strand__grid > .card p{
+  margin: 0;
+  max-width: 26ch; /* stops long titles looking awkward when centred */
+}
+
+/* Responsive: 2 columns */
+@media (max-width: 980px){
+  .strand__grid > .card{
+    flex-basis: calc((100% - var(--s3)) / 2);
+  }
+}
+
+/* Responsive: 1 column */
+@media (max-width: 600px){
+  .strand__grid > .card{
+    flex-basis: 100%;
+    max-width: 520px;
+  }
+}
+
