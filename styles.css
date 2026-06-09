@@ -1,380 +1,506 @@
-/* 1) Fonts */
+/* ============================================================
+   LC ECON — styles.css
+   ============================================================ */
+
+/* ── 1. Fonts ──────────────────────────────────────────────── */
 @font-face{
   font-family:"Latin Modern Roman";
   src:url("/assets/fonts/lmroman/lmroman10-regular.woff2") format("woff2");
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
+  font-weight:400; font-style:normal; font-display:swap;
 }
 @font-face{
   font-family:"Latin Modern Roman";
   src:url("/assets/fonts/lmroman/lmroman10-italic.woff2") format("woff2");
-  font-weight:400;
-  font-style:italic;
-  font-display:swap;
+  font-weight:400; font-style:italic; font-display:swap;
 }
 @font-face{
   font-family:"Latin Modern Roman";
   src:url("/assets/fonts/lmroman/lmroman10-bold.woff2") format("woff2");
-  font-weight:700;
-  font-style:normal;
-  font-display:swap;
+  font-weight:700; font-style:normal; font-display:swap;
 }
 @font-face{
   font-family:"Latin Modern Roman";
   src:url("/assets/fonts/lmroman/lmroman10-bolditalic.woff2") format("woff2");
-  font-weight:700;
-  font-style:italic;
-  font-display:swap;
+  font-weight:700; font-style:italic; font-display:swap;
 }
 
-/* 2) Tokens */
+/* ── 2. Design tokens ──────────────────────────────────────── */
 :root{
-  --bg: #fbfbfb;
+  /* Canvas */
+  --bg:      #f7f7f5;
   --surface: #ffffff;
-  --text: #111111;
-  --muted: #5a5a5a;
-  --border: #e6e6e6;
 
-  --accent: #4b2fbf;
-  --max: 1200px;
+  /* Text */
+  --text:   #18181b;
+  --muted:  #71717a;
+  --subtle: #a1a1aa;
 
-  --r-lg: 20px;
-  --r-md: 14px;
+  /* Borders */
+  --border: #e4e4e7;
 
+  /* Accent — deep indigo, vibrant but composed */
+  --accent:       #4338ca;
+  --accent-dark:  #3730a3;
+  --accent-light: rgba(67,56,202,.07);
+  --accent-med:   rgba(67,56,202,.13);
+
+  /* Geometry */
+  --max:  1100px;
+  --r-lg: 16px;
+  --r-md: 10px;
+  --r-sm: 6px;
+
+  /* Spacing (old names preserved for HTML compatibility) */
   --s3: 16px;
   --s4: 24px;
-  --s5: 36px;
-  --s6: 52px;
+  --s5: 40px;
+  --s6: 60px;
 
-  --shadow: 0 10px 30px rgba(0,0,0,.06);
-  --shadow2: 0 6px 18px rgba(0,0,0,.06);
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.05);
+  --shadow:    0 4px 16px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.04);
+  --shadow2:   var(--shadow-sm); /* compat alias */
 }
 
-/* 3) Base */
-*{ box-sizing:border-box; }
+/* ── 3. Reset & base ───────────────────────────────────────── */
+*, *::before, *::after{ box-sizing:border-box; }
 html, body{ height:100%; }
 
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.6;
-  font-family:"Latin Modern Roman", serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-family: "Latin Modern Roman", Georgia, serif;
   text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thin top accent stripe */
+body::before{
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(to right, var(--accent) 0%, #818cf8 55%, var(--accent) 100%);
 }
 
 a{ color:var(--accent); text-decoration:none; }
 a:hover{ text-decoration:underline; }
 
+/* ── 4. Typography ─────────────────────────────────────────── */
+h1, h2, h3, h4{ margin-top:0; line-height:1.2; }
+h1{ font-size: clamp(1.9rem, 3.5vw, 2.9rem); letter-spacing:-.025em; margin-bottom:.6rem; }
+h2{ font-size:1.4rem; letter-spacing:-.015em; margin-bottom:.5rem; }
+h3{ font-size:1.05rem; margin-bottom:.35rem; }
+p{ margin-top:0; }
+
+/* ── 5. Wrapper ────────────────────────────────────────────── */
 .wrapper{
   max-width: var(--max);
   margin: 0 auto;
-  padding: var(--s6) var(--s4);
+  padding: var(--s5) var(--s4);
 }
 
-/* 4) Components */
+/* ── 6. Navigation ─────────────────────────────────────────── */
 .nav{
-  display:flex;
-  flex-wrap:wrap;
-  gap: var(--s3);
-  align-items:center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
   margin-bottom: var(--s5);
+  padding-bottom: var(--s4);
+  border-bottom: 1px solid var(--border);
 }
-
 .nav a{
+  font-size: .875rem;
+  font-weight: 600;
+  font-family: system-ui, sans-serif;
   color: var(--text);
-  font-weight: 650;
-  padding: 8px 10px;
-  border-radius: 999px;
+  padding: 5px 11px;
+  border-radius: var(--r-sm);
+  letter-spacing: .01em;
+  transition: background .1s, color .1s;
 }
-
 .nav a:hover{
-  background: rgba(75,47,191,.08);
-  text-decoration:none;
+  background: var(--accent-light);
+  text-decoration: none;
 }
-
 .nav a.active{
-  background: rgba(75,47,191,.14);
+  background: var(--accent-med);
+  color: var(--accent-dark);
 }
 
-.badge{
-  font-size:12px;
-  padding:4px 10px;
-  border:1px solid var(--border);
-  border-radius:999px;
-  color:var(--muted);
-}
-
+/* ── 7. Hero ───────────────────────────────────────────────── */
 .hero{
   padding: var(--s5) 0 var(--s4);
 }
-.hero h1{
-  font-size: 48px;
-  line-height: 1.05;
-  margin: 0 0 var(--s3);
-  letter-spacing: -0.02em;
-}
+.hero h1{ margin:0 0 var(--s3); }
 .hero p{
-  margin:0;
+  margin: 0 0 var(--s3);
   color: var(--muted);
-  font-size: 18px;
-  max-width: 70ch;
+  font-size: 1.05rem;
+  max-width: 62ch;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap: var(--s3);
-  margin-top: var(--s4);
+/* ── 8. Utility classes ────────────────────────────────────── */
+.accent { color: var(--accent); }
+.muted  { color: var(--muted); }
+.subtle { color: var(--subtle); }
+
+.kicker{
+  font-size: .875rem;
+  color: var(--muted);
+  margin: 0 0 var(--s3);
 }
 
-.card{
-  display: flex;
-  flex-direction: column;
-  
-  background: var(--surface);
+.breadcrumbs{
+  font-size: .8rem;
+  font-family: system-ui, sans-serif;
+  color: var(--muted);
+  margin: calc(-1 * var(--s3) / 2) 0 var(--s3);
+}
+.breadcrumbs a{ color: var(--accent); }
+
+.tag{
+  display: inline-block;
+  font-size: .75rem;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: .03em;
+  padding: 2px 10px;
+  border-radius: 999px;
   border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: var(--s4);
-  color:inherit;
-  text-decoration:none;
-  box-shadow: var(--shadow2);
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.card:hover{
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  background: var(--surface);
+  color: var(--muted);
+  margin-right: 4px;
+  margin-bottom: 4px;
 }
 
+.badge{
+  display: inline-block;
+  font-size: .75rem;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.footer{
+  margin-top: var(--s5);
+  padding: var(--s4) 0;
+  border-top: 1px solid var(--border);
+  font-size: .8rem;
+  font-family: system-ui, sans-serif;
+  color: var(--subtle);
+  text-align: center;
+}
+
+/* ── 9. Section ────────────────────────────────────────────── */
 .section{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: var(--s5);
-  box-shadow: var(--shadow2);
-  margin: var(--s5) 0;
+  box-shadow: var(--shadow);
+  margin: var(--s4) 0;
 }
 
-/* -----------------------------------------
-   Chapter pages: PDF section layout + embeds
------------------------------------------- */
+/* Accent bar on direct-child h2 headings */
+.section > h2{
+  padding-left: .75rem;
+  border-left: 3px solid var(--accent);
+  margin-bottom: var(--s3);
+}
 
-/* Two-column section on desktop, stack on mobile */
+/* Sub-heading below h2 */
+.section > p.kicker{
+  color: var(--muted);
+  margin-bottom: var(--s4);
+}
+
+/* ── 10. Cards ─────────────────────────────────────────────── */
+.card{
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s4);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform .13s ease, box-shadow .13s ease, border-color .13s ease;
+}
+a.card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-med);
+  text-decoration: none;
+}
+.card > h3:first-child,
+.card > h2:first-child{ margin-top:0; }
+.card > p{ color: var(--muted); }
+.card > p:last-child{ margin-bottom:0; }
+
+/* ── 11. Grid ──────────────────────────────────────────────── */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+
+/* Two-column grid (grinds) */
+.grid-2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+@media(max-width:700px){
+  .grid-2{ grid-template-columns: 1fr; }
+}
+
+/* ── 12. Notes / Worksheets list ───────────────────────────── */
+.list{
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* When .list is a direct child of .section, remove redundant borders */
+.section > .list{
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0 calc(-1 * var(--s5));
+}
+
+.item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.item:last-child{ border-bottom: none; }
+.item:hover{ background: var(--accent-light); }
+
+.item h3{
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Hide the redundant "Notes PDF" / "Worksheet PDF" sub-label */
+.item p{ display: none; }
+
+.item a{
+  flex-shrink: 0;
+  font-size: .82rem;
+  font-family: system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: color .1s;
+}
+.item a:hover{ color: var(--accent-dark); text-decoration: none; }
+
+/* ── 13. Buttons ───────────────────────────────────────────── */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  font-size: .85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color .1s, box-shadow .1s;
+}
+.btn:hover{
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+.btn.primary{
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+.btn.primary:hover{
+  background: var(--accent-dark);
+  box-shadow: 0 2px 10px rgba(67,56,202,.35);
+}
+.btn.secondary{
+  background: transparent;
+  color: var(--muted);
+}
+.btn.secondary:hover{ color: var(--text); }
+
+.btnrow{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+/* ── 14. PDF embed (chapter pages) ────────────────────────── */
 .section.two{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--s4);
   align-items: start;
 }
-
-/* Button row spacing */
-.btnrow{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 10px;
-  margin-bottom: 16px;
-}
-
-/* Secondary button variant (you use .btn.secondary in HTML) */
-.btn.secondary{
-  background: transparent;
-}
-
-/* Big, centred-feeling PDF window */
 .embed{
   width: 100%;
   height: 72vh;
-  min-height: 680px;
+  min-height: 640px;
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   background: #fff;
 }
-
-/* Mobile: stack + slightly shorter embeds */
-@media (max-width: 980px){
-  .section.two{
-    grid-template-columns: 1fr;
-  }
-  .embed{
-    height: 70vh;
-    min-height: 520px;
-  }
+@media(max-width:980px){
+  .section.two{ grid-template-columns: 1fr; }
+  .embed{ height: 68vh; min-height: 480px; }
 }
 
-
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-weight: 650;
-}
-.btn.primary{
-  background: var(--accent);
-  color: white;
-  border-color: transparent;
-}
-
-/* 5) Responsive */
-@media (max-width: 700px){
-  .wrapper{ padding: var(--s5) var(--s3); }
-  .hero h1{ font-size: 34px; }
-  .section{ padding: var(--s4); }
-}
-
-/* -----------------------------------------
-   Strand layout for /course/ index
------------------------------------------- */
-
+/* ── 15. Strand layout ─────────────────────────────────────── */
 .strand{
   --strand-accent: var(--accent);
-  --strand-bg: #f6f6f6;
-
+  --strand-bg:     #f6f6f6;
   position: relative;
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   background: var(--strand-bg);
   padding: var(--s4);
   margin-top: var(--s4);
-  box-shadow: var(--shadow2);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
-
 .strand::before{
-  content:"";
-  position:absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 10px;
-  border-radius: var(--r-lg) 0 0 var(--r-lg);
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%; width: 4px;
   background: var(--strand-accent);
-  opacity: 0.20;
+  border-radius: var(--r-lg) 0 0 var(--r-lg);
 }
-
 .strand__head{
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: var(--s3);
   margin-bottom: var(--s3);
-  padding-left: 4px; /* to visually clear the left stripe */
+  padding-left: 16px;
 }
-
-.strand__head h3{
-  margin: 0.1rem 0 0;
-}
+.strand__head h3{ margin:.1rem 0 0; }
 
 .strand__tag{
   display: inline-block;
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.75);
-  padding: 6px 10px;
-  border-radius: 999px;
+  margin: 0 0 2px;
+  font-size: .72rem;
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--strand-accent);
 }
-
-.strand__grid{
-  margin-top: 0; /* your .grid may have its own spacing */
-}
-
-/* Make cards inherit the strand colour (subtle left accent) */
-.strand .card{
-  position: relative;
-  border-left: 4px solid rgba(0,0,0,0);
-}
-
-.strand .card::before{
-  content:"";
-  position:absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 4px;
-  background: var(--strand-accent);
-  opacity: 0.55;
-  border-radius: var(--r-md) 0 0 var(--r-md);
-}
-
-.strand .card:hover::before{
-  opacity: 0.85;
-}
-
-/* Strand colour set (edit these to taste) */
-.strand--1{ --strand-accent: #6b7280; --strand-bg: #f5f5f5; } /* neutral grey */
-.strand--2{ --strand-accent: #22c55e; --strand-bg: #f2fbf4; } /* green */
-.strand--3{ --strand-accent: #ec4899; --strand-bg: #fff3f8; } /* pink */
-.strand--4{ --strand-accent: #3b82f6; --strand-bg: #f3f7ff; } /* blue */
-.strand--5{ --strand-accent: #f97316; --strand-bg: #fff6ef; } /* orange */
-
-/* Responsive tweak: keep strand padding comfy on small screens */
-@media (max-width: 640px){
-  .strand{ padding: var(--s3); }
-}
-
-/* -----------------------------------------
-   Strand cards: 3 columns + centred content + centred last row
-   (Flexbox is best for centring incomplete final rows)
------------------------------------------- */
 
 .strand__grid{
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;      /* centres 1–2 cards on the last row */
+  justify-content: center;
   align-items: stretch;
   gap: var(--s3);
+  padding-left: 8px;
 }
-
-/* 3-column layout: make cards narrower */
 .strand__grid > .card{
-  /* 3 per row with two gaps */
-  flex: 0 1 calc((100% - (2 * var(--s3))) / 3);
-
-  /* sensible bounds so it doesn't get silly on huge/small screens */
-  min-width: 220px;
-  max-width: 320px;
-
-  /* centre text vertically + horizontally */
+  flex: 0 1 calc((100% - 2*var(--s3)) / 3);
+  min-width: 200px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-
-  /* consistent height so the grid looks tidy */
-  min-height: 140px;
+  min-height: 130px;
   padding: var(--s4);
+  border-left: 3px solid var(--strand-accent);
+}
+.strand__grid > .card:hover{
+  border-left-color: var(--strand-accent);
+}
+.strand__grid > .card h3{ margin:0 0 8px; font-size:.95rem; }
+.strand__grid > .card p{ margin:0; max-width:24ch; font-size:.87rem; }
+
+@media(max-width:980px){
+  .strand__grid > .card{ flex-basis: calc((100% - var(--s3)) / 2); }
+}
+@media(max-width:600px){
+  .strand__grid > .card{ flex-basis: 100%; max-width: 520px; }
+  .strand{ padding: var(--s3); }
 }
 
-/* tighten the typography so centred cards look intentional */
-.strand__grid > .card h3{
-  margin: 0 0 10px 0;
+/* Strand colour palette */
+.strand--1{ --strand-accent: #6366f1; --strand-bg: #f5f5fe; }
+.strand--2{ --strand-accent: #16a34a; --strand-bg: #f0faf3; }
+.strand--3{ --strand-accent: #db2777; --strand-bg: #fdf2f8; }
+.strand--4{ --strand-accent: #2563eb; --strand-bg: #eff6ff; }
+.strand--5{ --strand-accent: #ea580c; --strand-bg: #fff7ed; }
+
+/* ── 16. Bullet lists ──────────────────────────────────────── */
+
+/* Accent-coloured default bullets (non-destructive) */
+li::marker{
+  color: var(--accent);
+  font-size: .7em;
 }
 
-.strand__grid > .card p{
-  margin: 0;
-  max-width: 26ch; /* stops long titles looking awkward when centred */
+/* Two-column bullet list (grinds "Best for") */
+.two-col{
+  list-style: none;
+  padding-left: 1.3rem;
+  margin-bottom: var(--s3);
+  columns: 2;
+  column-gap: var(--s4);
 }
-
-/* Responsive: 2 columns */
-@media (max-width: 980px){
-  .strand__grid > .card{
-    flex-basis: calc((100% - var(--s3)) / 2);
-  }
+.two-col li{
+  position: relative;
+  padding: .25rem 0;
+  break-inside: avoid;
 }
-
-/* Responsive: 1 column */
-@media (max-width: 600px){
-  .strand__grid > .card{
-    flex-basis: 100%;
-    max-width: 520px;
-  }
+.two-col li::before{
+  content: "▪";
+  position: absolute;
+  left: -1.2rem;
+  top: .44rem;
+  font-size: .6rem;
+  color: var(--accent);
 }
+@media(max-width:600px){ .two-col{ columns: 1; } }
 
+/* ── 17. Responsive ────────────────────────────────────────── */
+@media(max-width:700px){
+  .wrapper{ padding: var(--s4) var(--s3); }
+  .section{ padding: var(--s4); }
+  .section > .list{ margin: 0 calc(-1 * var(--s4)); }
+}
