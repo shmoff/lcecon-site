@@ -1,0 +1,22 @@
+# Dependencies and system files
+node_modules/
+.git/
+.DS_Store
+
+# Cloudflare & Build outputs
+.cloudflare/
+.wrangler/
+dist/
+.next/
+.svelte-kit/
+build/
+out/
+
+# Media and assets (Claude doesn't need to read raw images/PDFs)
+public/assets/img/
+public/images/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
