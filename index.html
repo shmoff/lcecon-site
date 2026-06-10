@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LC Econ | Leaving Cert Economics notes, worksheets & grinds</title>
+  <title>LC Econ | Leaving Cert Economics notes, worksheets &amp; grinds</title>
   <meta name="description" content="Premium Leaving Cert Economics notes (PDF), worksheets, written course chapters, and grinds. Built for exam performance." />
   <link rel="canonical" href="https://lcecon.ie/" />
   <link rel="stylesheet" href="/styles.css" />
@@ -11,11 +11,11 @@
 <body>
   <main class="wrapper">
     <nav class="nav">
-      <a href="/">Home</a>
+      <a href="/" class="active">Home</a>
       <a href="/course/">Written Course</a>
       <a href="/notes/">Notes</a>
       <a href="/worksheets/">Worksheets</a>
-      <a href="/resources/">Data & Resources</a>
+      <a href="/resources/">Data &amp; Resources</a>
       <a href="/research/">Research Study</a>
       <a href="/grinds/">Grinds</a>
     </nav>
@@ -23,11 +23,14 @@
     <section class="hero">
       <h1>LC Econ <span class="accent">notes</span></h1>
       <p>Notes, worksheets, written course chapters and grinds — built around the Leaving Cert exam.</p>
-      <p class="kicker">Email: <a href="mailto:info@lcecon.ie">info@lcecon.ie</a></p>
-      <div>
+      <div style="margin-bottom: var(--s3);">
         <span class="tag">Exam-focused</span>
         <span class="tag">Chapter-by-chapter</span>
         <span class="tag">Real-world data</span>
+      </div>
+      <div class="btnrow">
+        <a class="btn primary" href="/grinds/">Book a grind</a>
+        <a class="btn secondary" href="mailto:info@lcecon.ie">info@lcecon.ie</a>
       </div>
     </section>
 
@@ -41,8 +44,8 @@
         <p>100 marks (20%) of the course</p>
       </a>
       <a class="card" href="/resources/">
-        <h3>Data & Resources</h3>
-        <p>People, blogs, sites & useful links.</p>
+        <h3>Data &amp; Resources</h3>
+        <p>People, blogs, sites &amp; useful links.</p>
       </a>
       <a class="card" href="/notes/">
         <h3>Notes (PDF)</h3>
@@ -56,6 +59,28 @@
         <h3>Book Grinds</h3>
         <p>Questions, grinds, and enquiries.</p>
       </a>
+    </section>
+
+    <section class="section" id="sd-demo">
+      <h2>Supply &amp; Demand</h2>
+      <p class="kicker">Shift demand or supply and watch the equilibrium update — try modelling a price floor, a tax, or a demand shock.</p>
+      <div class="diagram-wrap">
+        <canvas id="sd-canvas"></canvas>
+        <div class="diagram-controls">
+          <label>
+            <span class="ctrl-name">Demand shift</span>
+            <input type="range" id="sd-demand-shift" min="-25" max="25" value="0" step="1">
+            <span class="ctrl-val" id="sd-demand-val">0</span>
+          </label>
+          <label>
+            <span class="ctrl-name">Supply shift</span>
+            <input type="range" id="sd-supply-shift" min="-25" max="25" value="0" step="1">
+            <span class="ctrl-val" id="sd-supply-val">0</span>
+          </label>
+        </div>
+        <p class="diagram-caption">Positive demand shift = increase in demand (D shifts right). Positive supply shift = increase in supply (S shifts right).</p>
+      </div>
+      <script src="/assets/js/sd-diagram.js"></script>
     </section>
 
     <div class="footer">© LC Econ</div>
