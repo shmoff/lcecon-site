@@ -554,3 +554,118 @@ li::marker{
   .section{ padding: var(--s4); }
   .section > .list{ margin: 0 calc(-1 * var(--s4)); }
 }
+
+/* ── 19. Button toggles (diagram controls) ─────────────── */
+.btn-group{
+  display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;
+}
+.btn-toggle{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 14px; border-radius:var(--r-sm);
+  border:1px solid var(--border-light); background:var(--surface2);
+  color:var(--muted); font-family:"Latin Modern Roman",Georgia,serif;
+  font-size:.83rem; font-weight:600; cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s;
+  user-select:none;
+}
+.btn-toggle:hover{ border-color:var(--accent); color:var(--text); }
+.btn-toggle.active{ background:var(--accent-med); border-color:var(--accent); color:var(--accent); }
+.btn-toggle.t-green.active{ background:rgba(131,193,103,.14); border-color:#83c167; color:#83c167; }
+.btn-toggle.t-red.active{ background:rgba(252,98,85,.14); border-color:#fc6255; color:#fc6255; }
+.btn-toggle.t-yellow.active{ background:rgba(240,172,95,.14); border-color:#f0ac5f; color:#f0ac5f; }
+.btn-toggle.t-purple.active{ background:rgba(154,114,172,.14); border-color:#9a72ac; color:#9a72ac; }
+
+/* ── 20. Diagram legend ──────────────────────────────────────── */
+.diagram-legend{
+  display:flex; flex-wrap:wrap; gap:16px;
+  margin-top:12px; padding-top:12px; border-top:1px solid var(--border);
+}
+.legend-item{
+  display:flex; align-items:center; gap:8px;
+  font-size:.8rem; color:var(--muted);
+}
+.legend-swatch{ width:28px; height:3px; border-radius:2px; }
+
+/* ── 21. Calculators ─────────────────────────────────────────── */
+.calc-row{
+  display:flex; align-items:center; flex-wrap:wrap;
+  gap:12px; margin-bottom:14px;
+}
+.calc-row label{
+  display:flex; align-items:center; gap:8px;
+  font-size:.88rem; color:var(--muted);
+}
+.calc-row label .lbl{ min-width:155px; display:inline-block; }
+.calc-row input[type=number],
+.calc-row input[type=text],
+.calc-row select{
+  background:var(--surface2); border:1px solid var(--border-light);
+  border-radius:var(--r-sm); color:var(--text);
+  font-family:"Latin Modern Roman",Georgia,serif;
+  font-size:.88rem; padding:6px 10px; width:110px; outline:none;
+  transition:border-color .15s;
+}
+.calc-row input:focus,
+.calc-row select:focus{ border-color:var(--accent); }
+.calc-result{
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--r-md); padding:var(--s3) var(--s4); margin-top:var(--s3);
+}
+.calc-result .result-main{
+  font-size:2rem; font-weight:700; color:var(--accent);
+  line-height:1.2; margin-bottom:4px;
+}
+.calc-result .result-label{ font-size:.85rem; color:var(--muted); }
+.calc-result .result-sub{
+  font-size:.88rem; color:var(--muted); margin-top:8px; line-height:1.5;
+}
+.result-badge{
+  display:inline-block; margin-top:10px; padding:3px 14px;
+  border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.04em;
+}
+.badge-elastic{ background:rgba(131,193,103,.18); color:#83c167; border:1px solid rgba(131,193,103,.4); }
+.badge-inelastic{ background:rgba(252,98,85,.18); color:#fc6255; border:1px solid rgba(252,98,85,.4); }
+.badge-unit{ background:rgba(240,172,95,.18); color:#f0ac5f; border:1px solid rgba(240,172,95,.4); }
+.badge-pos{ background:rgba(131,193,103,.18); color:#83c167; border:1px solid rgba(131,193,103,.4); }
+.badge-neg{ background:rgba(252,98,85,.18); color:#fc6255; border:1px solid rgba(252,98,85,.4); }
+.badge-neut{ background:rgba(88,196,221,.18); color:#58c4dd; border:1px solid rgba(88,196,221,.4); }
+
+/* ── 22. Irish indicator cards (home page) ──────────────── */
+.indicator-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:var(--s3); margin-top:var(--s4);
+}
+.indicator-card{
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--r-md); padding:var(--s3) var(--s4);
+}
+.ind-value{ font-size:2rem; font-weight:700; line-height:1.1; margin-bottom:4px; }
+.ind-label{ font-size:.82rem; color:var(--muted); margin-bottom:3px; }
+.ind-source{ font-size:.72rem; color:var(--subtle); font-style:italic; }
+.ind-up{ color:#83c167; }
+.ind-down{ color:#fc6255; }
+.ind-neut{ color:#58c4dd; }
+
+/* ── 23. Filter search bar ──────────────────────────────── */
+.filter-wrap{ margin-bottom:var(--s3); }
+.filter-wrap input{
+  width:100%; background:var(--surface2);
+  border:1px solid var(--border-light); border-radius:var(--r-sm);
+  color:var(--text); font-family:"Latin Modern Roman",Georgia,serif;
+  font-size:.95rem; padding:10px 16px; outline:none;
+  transition:border-color .15s; box-sizing:border-box;
+}
+.filter-wrap input:focus{ border-color:var(--accent); }
+.filter-wrap input::placeholder{ color:var(--subtle); }
+.filter-empty{
+  display:none; padding:24px; text-align:center;
+  color:var(--muted); font-style:italic; font-size:.9rem;
+}
+
+/* ── 24. Scatter / bar chart SVG containers ─────────────── */
+.chart-wrap{
+  background:#12121f; border:1px solid var(--border);
+  border-radius:var(--r-md); padding:var(--s4) var(--s4) var(--s3);
+  margin-top:var(--s3); overflow-x:auto;
+}
+.chart-wrap svg{ display:block; width:100%; height:auto; }

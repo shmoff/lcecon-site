@@ -69,6 +69,53 @@
       </p>
     </section>
 
+    <section class="section" id="gov-interactive">
+      <h2>Interactive: Government Intervention</h2>
+      <p class="kicker">Explore how taxes, subsidies, and quotas shift market outcomes from the free-market equilibrium. Each intervention creates a deadweight loss (DWL) — a measure of allocative inefficiency.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle gov-mode-btn active" id="gov-btn-free">Free Market</button>
+          <button class="btn-toggle gov-mode-btn t-red" id="gov-btn-tax">Tax</button>
+          <button class="btn-toggle gov-mode-btn t-green" id="gov-btn-subsidy">Subsidy</button>
+          <button class="btn-toggle gov-mode-btn t-yellow" id="gov-btn-quota">Quota</button>
+        </div>
+        <div class="diagram-controls">
+          <label id="gov-tax-ctrl" style="display:none;">Tax amount: <strong id="gov-tax-val">10</strong>
+            <input type="range" id="gov-tax-slider" min="2" max="25" value="10" />
+          </label>
+          <label id="gov-sub-ctrl" style="display:none;">Subsidy amount: <strong id="gov-sub-val">10</strong>
+            <input type="range" id="gov-sub-slider" min="2" max="25" value="10" />
+          </label>
+          <label id="gov-quota-ctrl" style="display:none;">Quota quantity: <strong id="gov-quota-val">40</strong>
+            <input type="range" id="gov-quota-slider" min="10" max="80" value="40" />
+          </label>
+        </div>
+        <canvas id="gov-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Demand (D)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Supply (S)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Consumer price / Subsidy</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:rgba(252,98,85,0.3);"></span> Deadweight Loss</span>
+        </div>
+        <p class="diagram-caption">A tax creates a wedge between the consumer price (Pc) and producer price (Pp), reducing quantity traded and generating deadweight loss. A quota restricts supply, raising price above equilibrium.</p>
+      </div>
+      <script>
+      (function(){
+        // Show/hide relevant control on mode change
+        var controls={tax:'gov-tax-ctrl',subsidy:'gov-sub-ctrl',quota:'gov-quota-ctrl'};
+        document.querySelectorAll('.gov-mode-btn').forEach(function(btn){
+          btn.addEventListener('click',function(){
+            var m=this.id.replace('gov-btn-','');
+            Object.values(controls).forEach(function(id){
+              var el=document.getElementById(id);if(el)el.style.display='none';
+            });
+            if(controls[m]){var el=document.getElementById(controls[m]);if(el)el.style.display='';}
+          });
+        });
+      })();
+      </script>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -120,5 +167,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/gov-intervention.js"></script>
 </body>
 </html>

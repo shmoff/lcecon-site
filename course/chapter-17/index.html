@@ -27,7 +27,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 17</div>
     </section>
 
-    <section>
+    <section class="section">
         <h3>What you'll learn in this chapter</h3>
         <ul>
           <li>define globalisation and evaluate its positive and negative implications</li>
@@ -47,6 +47,15 @@
           <li>FDI terminology: inflows vs outflows, and why they matter for employment and tax revenue</li>
           <li>data interpretation: describe trends and then explain drivers (policy, competitiveness, global cycles)</li>
         </ul>
+    </section>
+
+    <section class="section" id="trade-interactive">
+      <h2>Interactive: Current Account Balance</h2>
+      <p class="kicker">A country's current account balance measures the net flow of goods, services, income, and transfers. Surpluses mean more is exported than imported; deficits mean the opposite.</p>
+      <div class="diagram-wrap">
+        <canvas id="trade-canvas"></canvas>
+        <p class="diagram-caption">Source: IMF World Economic Outlook, October 2023 (2023 estimates, % of GDP). Ireland's figure shown is the underlying balance, adjusted for MNC distortions — the headline figure (~14% of GDP) is distorted by multinational IP flows.</p>
+      </div>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -100,5 +109,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/trade-balance.js"></script>
 </body>
 </html>

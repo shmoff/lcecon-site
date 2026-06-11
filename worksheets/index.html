@@ -28,6 +28,10 @@
 
     <section class="section">
       <h2>All chapters</h2>
+        <div class="filter-wrap">
+          <input type="text" id="worksheets-filter" placeholder="Filter worksheets — type a topic or chapter…" autocomplete="off" />
+        </div>
+        <p class="filter-empty" id="worksheets-empty">No worksheets match your search.</p>
       <div class="list">
         <div class="item"><div><h3>Chapter 1 — Economics as a Way of Thinking</h3></div><div><a href="/worksheets/pdf/chapter-1-economics-as-a-way-of-thinking.pdf">Open PDF →</a></div></div>
         <div class="item"><div><h3>Chapter 4 — The Market Economy</h3></div><div><a href="/worksheets/pdf/chapter-4-the-market-economy.pdf">Open PDF →</a></div></div>
@@ -49,5 +53,24 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script>
+  (function(){
+    var input=document.getElementById('worksheets-filter');
+    var empty=document.getElementById('worksheets-empty');
+    if(!input)return;
+    var items=document.querySelectorAll('.list .item, .list li, .list a');
+    input.addEventListener('input',function(){
+      var q=this.value.toLowerCase().trim();
+      var visible=0;
+      items.forEach(function(el){
+        var txt=(el.textContent||'').toLowerCase();
+        var show=!q||txt.indexOf(q)!==-1;
+        el.style.display=show?'':'none';
+        if(show)visible++;
+      });
+      empty.style.display=(visible===0&&q)?'block':'none';
+    });
+  })();
+  </script>
 </body>
 </html>

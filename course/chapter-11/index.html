@@ -59,6 +59,24 @@
 
     </section>
 
+    <section class="section" id="cf-interactive">
+      <h2>Interactive: Circular Flow of Income</h2>
+      <p class="kicker">The circular flow model shows how money moves between households and firms in an economy, with injections (I, G, X) adding to the flow and leakages (S, T, M) withdrawing from it.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle active" id="cf-start">⏸ Pause</button>
+        </div>
+        <canvas id="cf-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Income flow (wages, rent, profit)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Spending on goods &amp; services</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Injections (I, G, X)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;"></span> Leakages (S, T, M)</span>
+        </div>
+        <p class="diagram-caption">Equilibrium national income requires injections = leakages: Investment + Government Spending + Exports = Savings + Taxation + Imports.</p>
+      </div>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -110,6 +128,8 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/circular-flow.js"></script>
 </body>
 </html>
 

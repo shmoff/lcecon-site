@@ -59,6 +59,34 @@
 
     </section>
 
+    <section class="section" id="labour-interactive">
+      <h2>Interactive: Labour Market</h2>
+      <p class="kicker">The labour market works like any market, with firms demanding labour (MRP) and workers supplying it. A minimum wage set above equilibrium creates unemployment — explore the effects below.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle lab-mode-btn active" id="lab-btn-free">Free Market</button>
+          <button class="btn-toggle lab-mode-btn t-green" id="lab-btn-minwage">Minimum Wage</button>
+          <button class="btn-toggle lab-mode-btn t-purple" id="lab-btn-union">Union Wage</button>
+        </div>
+        <div class="diagram-controls">
+          <label>Labour demand shift: <strong id="lab-demand-shift-val">0</strong>
+            <input type="range" id="lab-demand-shift" min="-20" max="20" value="0" />
+          </label>
+          <label>Labour supply shift: <strong id="lab-supply-shift-val">0</strong>
+            <input type="range" id="lab-supply-shift" min="-20" max="20" value="0" />
+          </label>
+        </div>
+        <canvas id="labour-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Labour Demand (LD)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Labour Supply (LS)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;"></span> Equilibrium (W*, L*)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:rgba(252,98,85,0.2);"></span> Unemployment gap</span>
+        </div>
+        <p class="diagram-caption">When a wage floor is set above equilibrium, Ls &gt; Ld — more workers want to work at the higher wage than firms are willing to hire, creating unemployment.</p>
+      </div>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -110,5 +138,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/labour-sd.js"></script>
 </body>
 </html>

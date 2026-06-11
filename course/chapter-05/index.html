@@ -65,6 +65,94 @@
       </p>
     </section>
 
+    <section class="section" id="elas-interactive">
+      <h2>Interactive: Elasticity Calculator</h2>
+      <p class="kicker">Calculate Price Elasticity of Demand (PED), Price Elasticity of Supply (PES), or Income Elasticity of Demand (YED) by entering the percentage changes below.</p>
+      <div class="btn-group">
+        <button class="btn-toggle elas-type-btn active" id="elas-btn-ped">PED</button>
+        <button class="btn-toggle elas-type-btn" id="elas-btn-pes">PES</button>
+        <button class="btn-toggle elas-type-btn" id="elas-btn-yed">YED</button>
+      </div>
+      <div class="calc-row" style="margin-top:14px;">
+        <label><span class="lbl" id="elas-top-lbl">% change in Qd:</span>
+          <input type="number" id="elas-num" value="-20" step="0.1" style="width:100px;" />
+          <span style="font-size:.82rem;color:var(--muted);">%</span>
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl" id="elas-bot-lbl">% change in Price:</span>
+          <input type="number" id="elas-den" value="10" step="0.1" style="width:100px;" />
+          <span style="font-size:.82rem;color:var(--muted);">%</span>
+        </label>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="elas-value">−2.00</div>
+        <div class="result-label" id="elas-formula">PED = %ΔQd ÷ %ΔP</div>
+        <div class="result-sub" id="elas-sub"></div>
+        <span class="result-badge" id="elas-badge"></span>
+      </div>
+      <script>
+      (function(){
+        var type='ped';
+        var numEl=document.getElementById('elas-num'),denEl=document.getElementById('elas-den');
+        var valEl=document.getElementById('elas-value'),frmEl=document.getElementById('elas-formula');
+        var subEl=document.getElementById('elas-sub'),badge=document.getElementById('elas-badge');
+        var topLbl=document.getElementById('elas-top-lbl'),botLbl=document.getElementById('elas-bot-lbl');
+        var cfg={
+          ped:{top:'% change in Qd:',bot:'% change in Price:',formula:'PED = %ΔQd ÷ %ΔP',dn:-20,dd:10},
+          pes:{top:'% change in Qs:',bot:'% change in Price:',formula:'PES = %ΔQs ÷ %ΔP',dn:15,dd:10},
+          yed:{top:'% change in Qd:',bot:'% change in Income:',formula:'YED = %ΔQd ÷ %ΔY',dn:12,dd:8},
+        };
+        function classify(v,t){
+          var a=Math.abs(v);
+          if(t==='yed'){
+            if(v<0)return{txt:'Inferior good',cls:'badge-neg'};
+            if(v<1)return{txt:'Normal good (necessity)',cls:'badge-inelastic'};
+            return{txt:'Normal good (luxury)',cls:'badge-elastic'};
+          }
+          if(a>1)return{txt:t==='pes'?'Elastic supply':'Elastic',cls:'badge-elastic'};
+          if(a<1)return{txt:t==='pes'?'Inelastic supply':'Inelastic',cls:'badge-inelastic'};
+          return{txt:'Unit elastic',cls:'badge-unit'};
+        }
+        function explain(v,t){
+          var a=Math.abs(v).toFixed(2);
+          if(t==='ped'){
+            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% fall in Qd — demand is price elastic.';
+            if(Math.abs(v)<1)return'A 1% rise in price causes only a '+a+'% fall in Qd — demand is price inelastic.';
+            return'A 1% change in price causes exactly a 1% change in Qd — unit elastic.';
+          }
+          if(t==='pes'){
+            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% rise in Qs — supply is price elastic.';
+            return'A 1% rise in price causes only a '+a+'% rise in Qs — supply is price inelastic.';
+          }
+          if(v<0)return'As income rises, demand falls — this is an inferior good (e.g. own-brand foods, bus travel).';
+          if(v<1)return'As income rises, demand rises proportionally less (YED = '+a+') — a normal necessity (e.g. food, utilities).';
+          return'As income rises, demand rises more than proportionally (YED = '+a+') — a luxury good (e.g. foreign holidays, premium cars).';
+        }
+        function update(){
+          var n=parseFloat(numEl.value)||0,d=parseFloat(denEl.value)||0;
+          if(d===0){valEl.textContent='∞';subEl.textContent='Cannot divide by zero.';badge.className='result-badge';badge.textContent='';return;}
+          var v=n/d,c=classify(v,type);
+          valEl.textContent=v.toFixed(2);
+          frmEl.textContent=cfg[type].formula+' = '+n+'% ÷ '+d+'% = '+v.toFixed(2);
+          subEl.textContent=explain(v,type);
+          badge.className='result-badge '+c.cls;badge.textContent=c.txt;
+        }
+        document.querySelectorAll('.elas-type-btn').forEach(function(btn){
+          btn.addEventListener('click',function(){
+            type=this.id.replace('elas-btn-','');
+            document.querySelectorAll('.elas-type-btn').forEach(function(b){b.classList.remove('active');});
+            this.classList.add('active');
+            topLbl.textContent=cfg[type].top;botLbl.textContent=cfg[type].bot;
+            numEl.value=cfg[type].dn;denEl.value=cfg[type].dd;update();
+          });
+        });
+        [numEl,denEl].forEach(function(el){el.addEventListener('input',update);});
+        update();
+      })();
+      </script>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">

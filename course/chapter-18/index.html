@@ -27,7 +27,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 18</div>
     </section>
 
-    <section>
+    <section class="section">
         <h3>What you'll learn in this chapter</h3>
         <ul>
           <li>interpret Irish trade patterns (goods vs services) and evaluate benefits/costs for Ireland</li>
@@ -51,6 +51,86 @@
           <li>applied questions: how a euro appreciation/depreciation affects exports, imports and inflation</li>
           <li>evaluation: protectionism vs free trade, using Irish examples and clear trade-offs</li>
         </ul>
+    </section>
+
+    <section class="section" id="ca-interactive">
+      <h2>Interactive: Comparative Advantage Calculator</h2>
+      <p class="kicker">Comparative advantage exists when a country can produce a good at a lower <em>opportunity cost</em> than another country — even if one country is absolutely better at producing both goods.</p>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:var(--s3);">Enter how many units each country can produce per hour of labour.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s3);">
+        <div>
+          <h3 style="margin-bottom:8px;">Country A</h3>
+          <div class="calc-row">
+            <label><span class="lbl">Good X (units/hr):</span>
+              <input type="number" id="ca-ax" value="6" min="0.1" step="0.1" style="width:80px;" />
+            </label>
+          </div>
+          <div class="calc-row">
+            <label><span class="lbl">Good Y (units/hr):</span>
+              <input type="number" id="ca-ay" value="4" min="0.1" step="0.1" style="width:80px;" />
+            </label>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin-bottom:8px;">Country B</h3>
+          <div class="calc-row">
+            <label><span class="lbl">Good X (units/hr):</span>
+              <input type="number" id="ca-bx" value="3" min="0.1" step="0.1" style="width:80px;" />
+            </label>
+          </div>
+          <div class="calc-row">
+            <label><span class="lbl">Good Y (units/hr):</span>
+              <input type="number" id="ca-by" value="4" min="0.1" step="0.1" style="width:80px;" />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="ca-result" style="font-size:1.1rem;line-height:1.5;"></div>
+        <div class="result-sub" id="ca-sub"></div>
+      </div>
+      <script>
+      (function(){
+        function upd(){
+          var ax=parseFloat(document.getElementById('ca-ax').value)||0;
+          var ay=parseFloat(document.getElementById('ca-ay').value)||0;
+          var bx=parseFloat(document.getElementById('ca-bx').value)||0;
+          var by=parseFloat(document.getElementById('ca-by').value)||0;
+          if(ax===0||ay===0||bx===0||by===0){
+            document.getElementById('ca-result').textContent='Enter values greater than 0.';
+            return;
+          }
+          // Opportunity cost of X for each country = units of Y given up to make 1 unit of X
+          var ocAx=ay/ax; // units of Y country A gives up per unit of X
+          var ocBx=by/bx;
+          var ocAy=ax/ay; // units of X country A gives up per unit of Y
+          var ocBy=bx/by;
+          var absAdvA=(ax>bx&&ay>by)?'Country A has an absolute advantage in both goods.':'';
+          var absAdvB=(bx>ax&&by>ay)?'Country B has an absolute advantage in both goods.':'';
+          var compAdvX=ocAx<ocBx?'Country A':'Country B';
+          var compAdvY=ocAy<ocBy?'Country A':'Country B';
+          var res='';
+          if(compAdvX===compAdvY){
+            res='Both goods have comparative advantage in the same country — check your inputs.';
+          } else {
+            res=compAdvX+' has a comparative advantage in Good X\n(OC of X: A = '+ocAx.toFixed(2)+'Y, B = '+ocBx.toFixed(2)+'Y)\n\n'+compAdvY+' has a comparative advantage in Good Y\n(OC of Y: A = '+ocAy.toFixed(2)+'X, B = '+ocBy.toFixed(2)+'X)';
+          }
+          var resultEl=document.getElementById('ca-result');
+          resultEl.style.whiteSpace='pre-line';
+          resultEl.textContent=res;
+          var subEl=document.getElementById('ca-sub');
+          var sub='';
+          if(absAdvA)sub+=absAdvA+' ';
+          if(absAdvB)sub+=absAdvB+' ';
+          sub+='Trade is mutually beneficial when each country specialises in the good where its opportunity cost is lowest.';
+          subEl.textContent=sub;
+        }
+        ['ca-ax','ca-ay','ca-bx','ca-by'].forEach(function(id){
+          document.getElementById(id).addEventListener('input',upd);
+        });
+        upd();
+      })();
+      </script>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->

@@ -65,6 +65,35 @@
       </p>
     </section>
 
+    <section class="section" id="sd-interactive">
+      <h2>Interactive: Supply &amp; Demand Diagram</h2>
+      <p class="kicker">Shift the demand and supply curves using the sliders, or explore the effects of government price controls — a price floor (e.g. minimum wage) or a price ceiling (e.g. rent control).</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle sd-mode-btn active" id="sd-btn-free">Free Market</button>
+          <button class="btn-toggle sd-mode-btn t-green" id="sd-btn-floor">Price Floor</button>
+          <button class="btn-toggle sd-mode-btn t-yellow" id="sd-btn-ceiling">Price Ceiling</button>
+        </div>
+        <div class="diagram-controls">
+          <label>Demand shift: <strong id="sd-demand-shift-val">0</strong>
+            <input type="range" id="sd-demand-shift" min="-20" max="20" value="0" />
+          </label>
+          <label>Supply shift: <strong id="sd-supply-shift-val">0</strong>
+            <input type="range" id="sd-supply-shift" min="-20" max="20" value="0" />
+          </label>
+        </div>
+        <canvas id="sd-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Demand (D)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Supply (S)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;"></span> Equilibrium</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Price Floor / Surplus</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#e8b84b;"></span> Price Ceiling / Shortage</span>
+        </div>
+        <p class="diagram-caption">A price floor set <em>above</em> equilibrium creates a surplus (Qs &gt; Qd). A price ceiling set <em>below</em> equilibrium creates a shortage (Qd &gt; Qs).</p>
+      </div>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -116,6 +145,8 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/sd-diagram.js"></script>
 </body>
 </html>
 

@@ -122,5 +122,28 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script>
+  (function(){
+    // Accordion for strand sections — toggle chapter list visibility
+    document.querySelectorAll('.strand').forEach(function(strand){
+      var heading=strand.querySelector('h2,h3');
+      if(!heading)return;
+      var content=strand.querySelector('.strand__grid, ul, .grid, ol');
+      if(!content)return;
+      heading.style.cursor='pointer';
+      heading.style.userSelect='none';
+      var chevron=document.createElement('span');
+      chevron.textContent=' ▾';
+      chevron.style.cssText='font-size:.8em;color:var(--accent);transition:transform .2s;display:inline-block;';
+      heading.appendChild(chevron);
+      var open=true;
+      heading.addEventListener('click',function(){
+        open=!open;
+        content.style.display=open?'':'none';
+        chevron.style.transform=open?'rotate(0)':'rotate(-90deg)';
+      });
+    });
+  })();
+  </script>
 </body>
 </html>

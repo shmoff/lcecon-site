@@ -54,6 +54,87 @@
       </p>
     </section>
 
+    <section class="section" id="sus-interactive">
+      <h2>Interactive: The Three Pillars of Sustainability</h2>
+      <p class="kicker">Sustainable development requires balance across three dimensions: Economic, Environmental, and Social. Adjust the sliders to explore trade-offs between the pillars.</p>
+      <div class="diagram-wrap">
+        <div class="diagram-controls">
+          <label>Economic growth: <strong id="sus-eco-val">70</strong>%
+            <input type="range" id="sus-eco" min="0" max="100" value="70" />
+          </label>
+          <label>Environmental protection: <strong id="sus-env-val">50</strong>%
+            <input type="range" id="sus-env" min="0" max="100" value="50" />
+          </label>
+          <label>Social equity: <strong id="sus-soc-val">60</strong>%
+            <input type="range" id="sus-soc" min="0" max="100" value="60" />
+          </label>
+        </div>
+        <canvas id="sus-canvas"></canvas>
+        <p class="diagram-caption">The shaded triangle represents the current balance. A perfect equilateral triangle indicates full balance across all three pillars.</p>
+      </div>
+      <script>
+      (function(){
+        var canvas=document.getElementById('sus-canvas');
+        if(!canvas)return;
+        var ctx=canvas.getContext('2d');
+        function setup(){
+          var dpr=window.devicePixelRatio||1;
+          var rect=canvas.parentElement.getBoundingClientRect();
+          var W=Math.min(Math.round(rect.width-32),420);
+          canvas.width=W*dpr;canvas.height=W*dpr;
+          canvas.style.width=W+'px';canvas.style.height=W+'px';
+          ctx.scale(dpr,dpr);draw(W);
+        }
+        function draw(S){
+          if(!S){var d=window.devicePixelRatio||1;S=canvas.width/d;}
+          ctx.fillStyle='#12121f';ctx.fillRect(0,0,S,S);
+          var cx=S/2,cy=S*0.52,r=S*0.38;
+          var eco=parseFloat(document.getElementById('sus-eco').value)/100;
+          var env=parseFloat(document.getElementById('sus-env').value)/100;
+          var soc=parseFloat(document.getElementById('sus-soc').value)/100;
+          var pts=[[cx,cy-r],[cx+r*Math.sin(2*Math.PI/3),cy-r*Math.cos(2*Math.PI/3)],[cx-r*Math.sin(2*Math.PI/3),cy-r*Math.cos(2*Math.PI/3)]];
+          ctx.strokeStyle='rgba(80,80,106,0.4)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);ctx.lineTo(pts[1][0],pts[1][1]);ctx.lineTo(pts[2][0],pts[2][1]);ctx.closePath();ctx.stroke();
+          var colors=['#f0ac5f','#83c167','#9a72ac'];
+          var labels=['Economic','Environmental','Social'];
+          var vals=[eco,env,soc];
+          pts.forEach(function(p,i){
+            ctx.strokeStyle=colors[i];ctx.lineWidth=1;ctx.globalAlpha=0.35;
+            ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.globalAlpha=1;
+            var tx=cx+(p[0]-cx)*vals[i],ty=cy+(p[1]-cy)*vals[i];
+            ctx.fillStyle=colors[i];ctx.shadowColor=colors[i];ctx.shadowBlur=10;
+            ctx.beginPath();ctx.arc(tx,ty,5.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+            ctx.font='bold 12px "Latin Modern Roman",Georgia,serif';
+            ctx.fillStyle=colors[i];ctx.textAlign='center';
+            var lx=p[0]+(p[0]-cx)*0.13,ly=p[1]+(p[1]-cy)*0.13+4;
+            ctx.fillText(labels[i],lx,ly);
+            ctx.font='11px "Latin Modern Roman",Georgia,serif';
+            ctx.fillStyle='#8888aa';
+            ctx.fillText(Math.round(vals[i]*100)+'%',lx,ly+14);
+          });
+          var tp=pts.map(function(p,i){return[cx+(p[0]-cx)*vals[i],cy+(p[1]-cy)*vals[i]];});
+          ctx.beginPath();ctx.moveTo(tp[0][0],tp[0][1]);ctx.lineTo(tp[1][0],tp[1][1]);ctx.lineTo(tp[2][0],tp[2][1]);ctx.closePath();
+          ctx.fillStyle='rgba(88,196,221,0.10)';ctx.fill();
+          ctx.strokeStyle='rgba(88,196,221,0.55)';ctx.lineWidth=2;ctx.shadowColor='#58c4dd';ctx.shadowBlur=8;ctx.stroke();ctx.shadowBlur=0;
+          var avg=(eco+env+soc)/3;
+          var bal=1-Math.sqrt(((eco-avg)*(eco-avg)+(env-avg)*(env-avg)+(soc-avg)*(soc-avg))/3);
+          ctx.fillStyle='#58c4dd';ctx.font='bold 13px "Latin Modern Roman",Georgia,serif';ctx.textAlign='center';
+          ctx.fillText('Balance: '+Math.round(bal*100)+'%',cx,cy+5);
+          ctx.fillStyle='#8888aa';ctx.font='10px "Latin Modern Roman",Georgia,serif';
+          ctx.fillText('(100% = perfectly equal pillars)',cx,cy+19);
+        }
+        ['sus-eco','sus-env','sus-soc'].forEach(function(id){
+          var el=document.getElementById(id);
+          if(el)el.addEventListener('input',function(){
+            document.getElementById(id+'-val').textContent=this.value;draw();
+          });
+        });
+        var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(setup,80);});
+        setup();
+      })();
+      </script>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">

@@ -26,8 +26,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 12</div>
     </section>
 
-
-
+    <section class="section">
       <h3>What you'll learn in this chapter</h3>
       <ul>
         <li>debate why governments tax and how taxes affect the economy overall</li>
@@ -60,6 +59,74 @@
         <li>policy scenarios: choose an appropriate fiscal stance for recession vs boom</li>
         <li>EU angle: discuss constraints/rules and why they matter for Ireland</li>
       </ul>
+    </section>
+
+    <section class="section" id="budget-interactive">
+      <h2>Interactive: Budget Balance Calculator</h2>
+      <p class="kicker">Ireland's 2023 Exchequer outturn (Dept. of Finance). Adjust the sliders to see how changes in revenue or expenditure affect the budget balance.</p>
+      <div class="calc-row">
+        <label><span class="lbl">Income Tax (€bn):</span>
+          <input type="number" id="bud-income-tax" value="28.0" step="0.1" min="0" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Corporation Tax (€bn):</span>
+          <input type="number" id="bud-corp-tax" value="22.6" step="0.1" min="0" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl">VAT (€bn):</span>
+          <input type="number" id="bud-vat" value="18.8" step="0.1" min="0" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Other Revenue (€bn):</span>
+          <input type="number" id="bud-other-rev" value="19.1" step="0.1" min="0" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl">Social Protection (€bn):</span>
+          <input type="number" id="bud-social" value="27.5" step="0.1" min="0" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Health (€bn):</span>
+          <input type="number" id="bud-health" value="20.6" step="0.1" min="0" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl">Education (€bn):</span>
+          <input type="number" id="bud-edu" value="11.9" step="0.1" min="0" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Other Expenditure (€bn):</span>
+          <input type="number" id="bud-other-exp" value="20.5" step="0.1" min="0" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="bud-balance">+€8.0bn</div>
+        <div class="result-label" id="bud-label">Budget Surplus</div>
+        <div class="result-sub" id="bud-sub">Total revenue: €88.5bn | Total expenditure: €80.5bn</div>
+      </div>
+      <p class="muted" style="font-size:.8rem;margin-top:8px;font-style:italic;">Source: Department of Finance, Exchequer Statement 2023 (outturn figures, rounded).</p>
+      <script>
+      (function(){
+        var ids=['income-tax','corp-tax','vat','other-rev','social','health','edu','other-exp'];
+        var revIds=['income-tax','corp-tax','vat','other-rev'];
+        var expIds=['social','health','edu','other-exp'];
+        function get(id){return parseFloat(document.getElementById('bud-'+id).value)||0;}
+        function upd(){
+          var rev=revIds.reduce(function(s,id){return s+get(id);},0);
+          var exp=expIds.reduce(function(s,id){return s+get(id);},0);
+          var bal=rev-exp;
+          var balEl=document.getElementById('bud-balance');
+          var lbl=document.getElementById('bud-label');
+          var sub=document.getElementById('bud-sub');
+          balEl.textContent=(bal>=0?'+':'−')+'€'+Math.abs(bal).toFixed(1)+'bn';
+          balEl.style.color=bal>=0?'#83c167':'#fc6255';
+          lbl.textContent=bal>0?'Budget Surplus':bal<0?'Budget Deficit':'Balanced Budget';
+          sub.textContent='Total revenue: €'+rev.toFixed(1)+'bn | Total expenditure: €'+exp.toFixed(1)+'bn';
+        }
+        ids.forEach(function(id){
+          var el=document.getElementById('bud-'+id);
+          if(el)el.addEventListener('input',upd);
+        });
+        upd();
+      })();
+      </script>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->

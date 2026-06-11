@@ -56,6 +56,41 @@
       </ul>
     </section>
 
+    <section class="section" id="ms-interactive">
+      <h2>Interactive: Market Structures — AR, MR &amp; MC</h2>
+      <p class="kicker">Toggle between perfect competition and monopoly to see how market structure changes the firm's price, output, and profit. In monopoly, AR &gt; MR because the firm must lower price to sell more.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle ms-mode-btn active" id="ms-btn-pc">Perfect Competition</button>
+          <button class="btn-toggle ms-mode-btn t-red" id="ms-btn-monopoly">Monopoly</button>
+        </div>
+        <div class="diagram-controls" id="ms-pc-ctrl">
+          <label>Market price (AR = MR): <strong id="ms-price-val">€17</strong>
+            <input type="range" id="ms-price-slider" min="20" max="95" value="55" />
+          </label>
+        </div>
+        <canvas id="ms-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> MC</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> ATC</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> AR (Demand)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#5cd0b3;"></span> MR</span>
+        </div>
+        <p class="diagram-caption">Profit is maximised where MC = MR. The shaded rectangle shows supernormal profit (blue) or a loss (red). In monopoly, Pm &gt; Pc and Qm &lt; Qc — allocative inefficiency.</p>
+      </div>
+      <script>
+      (function(){
+        var pcCtrl=document.getElementById('ms-pc-ctrl');
+        document.querySelectorAll('.ms-mode-btn').forEach(function(btn){
+          btn.addEventListener('click',function(){
+            var m=this.id.replace('ms-btn-','');
+            if(pcCtrl)pcCtrl.style.display=(m==='pc')?'':'none';
+          });
+        });
+      })();
+      </script>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -107,6 +142,8 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/market-structures.js"></script>
 </body>
 </html>
 

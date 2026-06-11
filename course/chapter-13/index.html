@@ -26,7 +26,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 13</div>
     </section>
 
-    <section>
+    <section class="section">
       <h3>What you'll learn in this chapter</h3>
       <ul>
         <li>define key terms: full employment, labour force, participation rate, unemployment rate</li>
@@ -59,6 +59,28 @@
         <li><strong>Policy evaluation:</strong> propose measures to reduce unemployment (training, transport, FDI, wage subsidies, infrastructure) and state at least one limitation/trade-off.</li>
         <li><strong>Poverty link:</strong> use CSO SILC-style indicators (risk of poverty, deprivation, consistent poverty) to explain how unemployment can worsen living standards.</li>
       </ul>
+    </section>
+
+    <section class="section" id="phillips-interactive">
+      <h2>Interactive: Phillips Curve</h2>
+      <p class="kicker">The short-run Phillips curve (SRPC) shows an inverse relationship between unemployment and inflation. Real Irish data points (CSO, 2018–2023) are plotted. Use the slider to shift the SRPC by changing expected inflation.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle active" id="phillips-toggle-data">Hide Irish data</button>
+        </div>
+        <div class="diagram-controls">
+          <label>Expected inflation: <strong id="phillips-exp-val">2%</strong>
+            <input type="range" id="phillips-exp-inf" min="0" max="8" value="2" step="0.5" />
+          </label>
+        </div>
+        <canvas id="phillips-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> SRPC</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#9a72ac; height:2px; border-top:2px dashed #9a72ac; background:none;"></span> LRPC (NAIRU)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f; border-radius:50%;"></span> Irish data (CSO)</span>
+        </div>
+        <p class="diagram-caption">Source: CSO Labour Force Survey (unemployment) &amp; CSO Consumer Price Index (HICP inflation), 2018–2023. NAIRU estimated at 4.5%.</p>
+      </div>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -112,5 +134,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/phillips-curve.js"></script>
 </body>
 </html>

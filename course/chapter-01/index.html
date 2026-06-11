@@ -56,6 +56,60 @@
       </ul>
     </section>
 
+    <section class="section" id="oc-interactive">
+      <h2>Interactive: Opportunity Cost Calculator</h2>
+      <p class="kicker">Opportunity cost is the value of the next-best alternative foregone when a choice is made. Enter two options below to explore the concept.</p>
+      <div class="calc-row">
+        <label><span class="lbl">Option A — label:</span>
+          <input type="text" id="oc-name-a" value="University" style="width:150px;" />
+        </label>
+        <label><span class="lbl">Annual value (€k):</span>
+          <input type="number" id="oc-val-a" value="35" min="0" max="9999" style="width:90px;" />
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl">Option B — label:</span>
+          <input type="text" id="oc-name-b" value="Work" style="width:150px;" />
+        </label>
+        <label><span class="lbl">Annual value (€k):</span>
+          <input type="number" id="oc-val-b" value="28" min="0" max="9999" style="width:90px;" />
+        </label>
+      </div>
+      <div class="calc-row">
+        <label><span class="lbl">You choose:</span>
+          <select id="oc-choice">
+            <option value="a">Option A</option>
+            <option value="b">Option B</option>
+          </select>
+        </label>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="oc-cost">€28k</div>
+        <div class="result-label" id="oc-label">Opportunity cost of choosing University</div>
+        <div class="result-sub" id="oc-sub">By choosing University (€35k/yr value), you forgo Work (€28k/yr). The opportunity cost is €28k per year.</div>
+      </div>
+      <script>
+      (function(){
+        var nA=document.getElementById('oc-name-a'),vA=document.getElementById('oc-val-a');
+        var nB=document.getElementById('oc-name-b'),vB=document.getElementById('oc-val-b');
+        var ch=document.getElementById('oc-choice');
+        var costEl=document.getElementById('oc-cost'),lbl=document.getElementById('oc-label'),sub=document.getElementById('oc-sub');
+        function upd(){
+          var nameA=nA.value||'Option A',valA=parseFloat(vA.value)||0;
+          var nameB=nB.value||'Option B',valB=parseFloat(vB.value)||0;
+          var chA=ch.value==='a';
+          var chosenName=chA?nameA:nameB,chosenVal=chA?valA:valB;
+          var forgoneName=chA?nameB:nameA,forgoneVal=chA?valB:valA;
+          costEl.textContent='€'+forgoneVal+'k';
+          lbl.textContent='Opportunity cost of choosing '+chosenName;
+          sub.textContent='By choosing '+chosenName+' (€'+chosenVal+'k/yr value), you forgo '+forgoneName+' (€'+forgoneVal+'k/yr). The opportunity cost is €'+forgoneVal+'k per year.';
+        }
+        [nA,vA,nB,vB,ch].forEach(function(el){el.addEventListener('input',upd);});
+        upd();
+      })();
+      </script>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">

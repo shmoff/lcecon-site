@@ -26,7 +26,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 14</div>
     </section>
 
-    <section>
+    <section class="section">
         <h3>What you'll learn in this chapter</h3>
         <ul>
           <li>explain what inflation is and distinguish common causes (demand-pull, cost-push, imported, policy-induced)</li>
@@ -47,6 +47,63 @@
           <li>effects question: consumers vs firms vs economy (include competitiveness/FDI)</li>
           <li>EU angle: why HICP matters for comparing inflation across member states</li>
         </ul>
+    </section>
+
+    <section class="section" id="cpi-interactive">
+      <h2>Interactive: CPI &amp; Fisher Equation</h2>
+      <p class="kicker">Calculate the Consumer Price Index (CPI) from a basket of goods, then use the Fisher equation to find the real interest rate from the nominal rate and inflation.</p>
+      <h3 style="margin-top:var(--s3);margin-bottom:8px;">CPI Calculator</h3>
+      <div class="calc-row">
+        <label><span class="lbl">Base year basket cost (€):</span>
+          <input type="number" id="cpi-base" value="500" step="1" min="1" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Current year basket cost (€):</span>
+          <input type="number" id="cpi-current" value="540" step="1" min="1" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-result" style="margin-bottom:var(--s3);">
+        <div class="result-main" id="cpi-result">108.0</div>
+        <div class="result-label">Consumer Price Index (base year = 100)</div>
+        <div class="result-sub" id="cpi-sub">Inflation rate: +8.0% since the base year.</div>
+      </div>
+      <h3 style="margin-bottom:8px;">Fisher Equation</h3>
+      <div class="calc-row">
+        <label><span class="lbl">Nominal interest rate (%):</span>
+          <input type="number" id="fisher-nom" value="5.5" step="0.1" min="0" style="width:100px;" />
+        </label>
+        <label><span class="lbl">Inflation rate (%):</span>
+          <input type="number" id="fisher-inf" value="2.0" step="0.1" style="width:100px;" />
+        </label>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="fisher-result">3.5%</div>
+        <div class="result-label">Real Interest Rate</div>
+        <div class="result-sub" id="fisher-sub">Real rate ≈ Nominal rate − Inflation = 5.5% − 2.0% = 3.5%. The Fisher equation corrects for the erosion of purchasing power by inflation.</div>
+      </div>
+      <script>
+      (function(){
+        function updCPI(){
+          var base=parseFloat(document.getElementById('cpi-base').value)||1;
+          var cur=parseFloat(document.getElementById('cpi-current').value)||0;
+          var cpi=(cur/base)*100;
+          var inf=cpi-100;
+          document.getElementById('cpi-result').textContent=cpi.toFixed(1);
+          document.getElementById('cpi-sub').textContent='Inflation rate: '+(inf>=0?'+':'')+inf.toFixed(1)+'% since the base year.';
+        }
+        function updFisher(){
+          var nom=parseFloat(document.getElementById('fisher-nom').value)||0;
+          var inf=parseFloat(document.getElementById('fisher-inf').value)||0;
+          var real=nom-inf;
+          var el=document.getElementById('fisher-result');
+          el.textContent=(real>=0?'':'')+real.toFixed(1)+'%';
+          el.style.color=real>=0?'#83c167':'#fc6255';
+          document.getElementById('fisher-sub').textContent='Real rate ≈ Nominal rate − Inflation = '+nom+'% − '+inf+'% = '+real.toFixed(1)+'%. The Fisher equation corrects for the erosion of purchasing power by inflation.';
+        }
+        ['cpi-base','cpi-current'].forEach(function(id){document.getElementById(id).addEventListener('input',updCPI);});
+        ['fisher-nom','fisher-inf'].forEach(function(id){document.getElementById(id).addEventListener('input',updFisher);});
+        updCPI();updFisher();
+      })();
+      </script>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->

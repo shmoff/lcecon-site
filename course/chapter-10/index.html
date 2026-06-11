@@ -53,6 +53,29 @@
 
     </section>
 
+    <section class="section" id="ext-interactive">
+      <h2>Interactive: Externalities</h2>
+      <p class="kicker">An externality is a cost or benefit that spills over to a third party not involved in the transaction. Toggle between negative production externality (e.g. pollution) and positive consumption externality (e.g. education) to see how they cause market failure.</p>
+      <div class="diagram-wrap">
+        <div class="btn-group">
+          <button class="btn-toggle ext-mode-btn active t-red" id="ext-btn-negative">Negative Production Externality</button>
+          <button class="btn-toggle ext-mode-btn t-green" id="ext-btn-positive">Positive Consumption Externality</button>
+        </div>
+        <canvas id="ext-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> MPB / MSB (Demand)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> MPC (Supply)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;"></span> MSC / External cost</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#5cd0b3;"></span> MSB / External benefit</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:rgba(252,98,85,0.25);"></span> Deadweight Loss</span>
+        </div>
+        <p class="diagram-caption">
+          <strong>Negative:</strong> Market overproduces at Qm; social optimum is Q* where MSC = MPB. <br>
+          <strong>Positive:</strong> Market underproduces at Qm; social optimum is Q* where MPC = MSB.
+        </p>
+      </div>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -104,5 +127,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/externality.js"></script>
 </body>
 </html>

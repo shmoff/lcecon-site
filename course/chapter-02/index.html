@@ -54,6 +54,26 @@
       </p>
     </section>
 
+    <section class="section" id="ppc-interactive">
+      <h2>Interactive: Production Possibility Curve</h2>
+      <p class="kicker">The PPC shows the maximum combinations of two goods an economy can produce using all available resources efficiently. Click anywhere on the diagram to classify a production point. Use the slider to shift the curve.</p>
+      <div class="diagram-wrap">
+        <div class="diagram-controls">
+          <label>Technology / Resources: <strong id="ppc-shift-val">0</strong>
+            <input type="range" id="ppc-shift" min="-20" max="20" value="0" />
+          </label>
+        </div>
+        <canvas id="ppc-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> PPC</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;"></span> Productively efficient</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Inefficient (inside PPC)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Unattainable (outside PPC)</span>
+        </div>
+        <p class="diagram-caption">Click anywhere on the canvas to drop a point and see its classification. Drag the slider right to simulate economic growth (outward shift).</p>
+      </div>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -104,5 +124,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/ppc-diagram.js"></script>
 </body>
 </html>

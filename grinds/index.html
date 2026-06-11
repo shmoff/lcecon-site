@@ -145,6 +145,56 @@
       </div> -->
     </section>
 
+
+    <section class="section" id="cost-estimator">
+      <h2>Session Cost Estimator</h2>
+      <p class="kicker">Estimate the total investment based on your session plan. Rates are indicative — contact us for a personalised quote.</p>
+      <div class="calc-row">
+        <label><span class="lbl">Number of sessions:</span>
+          <input type="number" id="grinds-sessions" value="6" min="1" max="50" style="width:80px;" />
+        </label>
+        <label><span class="lbl">Session length (hrs):</span>
+          <select id="grinds-length" style="width:100px;">
+            <option value="1">1 hr</option>
+            <option value="1.5" selected>1.5 hrs</option>
+            <option value="2">2 hrs</option>
+          </select>
+        </label>
+        <label><span class="lbl">Format:</span>
+          <select id="grinds-format">
+            <option value="online" selected>Online</option>
+            <option value="inperson">In-person</option>
+          </select>
+        </label>
+      </div>
+      <div class="calc-result">
+        <div class="result-main" id="grinds-total">€270</div>
+        <div class="result-label" id="grinds-breakdown">6 × 1.5 hrs online = 9 hrs total</div>
+        <div class="result-sub">Pricing is per-hour. Contact <a href="mailto:info@lcecon.ie">info@lcecon.ie</a> for current rates and availability. Block booking discounts may apply.</div>
+      </div>
+      <script>
+      (function(){
+        // TODO: Update RATE_ONLINE and RATE_INPERSON with actual current rates before publishing
+        var RATE_ONLINE=30, RATE_INPERSON=35;
+        function upd(){
+          var n=parseInt(document.getElementById('grinds-sessions').value)||1;
+          var len=parseFloat(document.getElementById('grinds-length').value)||1;
+          var fmt=document.getElementById('grinds-format').value;
+          var rate=fmt==='online'?RATE_ONLINE:RATE_INPERSON;
+          var total=n*len*rate;
+          var hrs=n*len;
+          document.getElementById('grinds-total').textContent='€'+total.toLocaleString();
+          document.getElementById('grinds-breakdown').textContent=n+' × '+len+' hr'+(len!==1?'s':'')+' '+(fmt==='online'?'online':'in-person')+' = '+hrs+' hr'+(hrs!==1?'s':'')+' total @ €'+rate+'/hr';
+        }
+        ['grinds-sessions','grinds-length','grinds-format'].forEach(function(id){
+          document.getElementById(id).addEventListener('input',upd);
+          document.getElementById(id).addEventListener('change',upd);
+        });
+        upd();
+      })();
+      </script>
+    </section>
+
     <div class="footer">© LC Econ</div>
   </main>
 </body>

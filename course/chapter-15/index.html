@@ -26,7 +26,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 15</div>
     </section>
 
-    <section>
+    <section class="section">
           <h3>What you'll learn in this chapter</h3>
           <ul>
             <li>analyse demand and supply of cash/credit in the money market</li>
@@ -48,6 +48,29 @@
             <li>rate-change impacts: list and explain effects of rising vs falling interest rates</li>
             <li>evaluation: why regulation exists (consumer protection, stability) and possible downsides</li>
           </ul>
+    </section>
+
+    <section class="section" id="compound-interactive">
+      <h2>Interactive: Compound Interest Visualiser</h2>
+      <p class="kicker">See how compound interest (interest on interest) grows wealth dramatically over time compared to simple interest. Adjust the principal, rate, and time horizon below.</p>
+      <div class="diagram-wrap">
+        <div class="diagram-controls">
+          <label>Principal (€): <input type="number" id="compound-principal" value="1000" min="100" max="100000" step="100" style="width:100px;" /></label>
+          <label>Annual rate: <strong id="compound-rate-val">5%</strong>
+            <input type="range" id="compound-rate" min="1" max="20" value="5" />
+          </label>
+          <label>Years: <strong id="compound-years-val">20</strong>
+            <input type="range" id="compound-years" min="1" max="50" value="20" />
+          </label>
+        </div>
+        <canvas id="compound-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Annual compounding</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Monthly compounding</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#50506a;"></span> Simple interest</span>
+        </div>
+        <p id="compound-summary" class="diagram-caption"></p>
+      </div>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -101,5 +124,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/compound-interest.js"></script>
 </body>
 </html>

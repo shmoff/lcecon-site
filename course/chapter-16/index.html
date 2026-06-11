@@ -26,7 +26,7 @@
       <div class="breadcrumbs"><a href="/">Home</a> / <a href="/course/">Written Course</a> / Chapter 16</div>
     </section>
 
-    <section>
+    <section class="section">
         <h3>What you'll learn in this chapter</h3>
         <ul>
           <li>profile countries/regions using income, wealth and inequality</li>
@@ -56,6 +56,15 @@
           <li><strong>Foreign aid:</strong> know what ODA is, why Ireland provides it, and be able to evaluate effectiveness (benefits + limits/opportunity cost).</li>
           <li><strong>NGO vs State:</strong> explain why priorities can clash (governments must weigh multiple goals; NGOs focus on specific causes).</li>
         </ul>
+    </section>
+
+    <section class="section" id="hdi-interactive">
+      <h2>Interactive: HDI vs GNI per Capita</h2>
+      <p class="kicker">The Human Development Index (HDI) measures more than income alone — it combines health, education, and standard of living. Explore how countries compare using UNDP data.</p>
+      <div class="diagram-wrap">
+        <canvas id="hdi-canvas"></canvas>
+        <p class="diagram-caption">Source: UNDP Human Development Report 2023 (2022 data). GNI per capita in PPP 2017 USD thousands. Ireland is highlighted in blue.</p>
+      </div>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -109,5 +118,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/hdi-scatter.js"></script>
 </body>
 </html>

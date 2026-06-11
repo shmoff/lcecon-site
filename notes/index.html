@@ -28,6 +28,10 @@
 
     <section class="section">
       <h2>All topics</h2>
+        <div class="filter-wrap">
+          <input type="text" id="notes-filter" placeholder="Filter notes — type a topic or chapter number…" autocomplete="off" />
+        </div>
+        <p class="filter-empty" id="notes-empty">No notes match your search.</p>
       <div class="list">
         <div class="item"><div><h3>Costs</h3></div><div><a href="/notes/pdf/costs.pdf">Open PDF →</a></div></div>
         <div class="item"><div><h3>Economic Growth &amp; Development</h3></div><div><a href="/notes/pdf/economic-growth-and-development.pdf">Open PDF →</a></div></div>
@@ -53,5 +57,24 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script>
+  (function(){
+    var input=document.getElementById('notes-filter');
+    var empty=document.getElementById('notes-empty');
+    if(!input)return;
+    var items=document.querySelectorAll('.list .item, .list li, .list a');
+    input.addEventListener('input',function(){
+      var q=this.value.toLowerCase().trim();
+      var visible=0;
+      items.forEach(function(el){
+        var txt=(el.textContent||'').toLowerCase();
+        var show=!q||txt.indexOf(q)!==-1;
+        el.style.display=show?'':'none';
+        if(show)visible++;
+      });
+      empty.style.display=(visible===0&&q)?'block':'none';
+    });
+  })();
+  </script>
 </body>
 </html>
