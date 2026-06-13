@@ -8,6 +8,28 @@
 
   function getB(s){ return Math.pow(10,(50-s)/20); }
 
+  // Clip the line P = a - b*Q to the box [0,100]x[0,100] and return its two
+  // boundary crossings. This renders a single clean segment at every slope —
+  // a true vertical line when perfectly inelastic, true horizontal when
+  // perfectly elastic — instead of a broken point-sampled curve.
+  function clipLine(a,b){
+    var pts=[];
+    function add(q,p){
+      if(q<-0.001||q>100.001||p<-0.001||p>100.001)return;
+      for(var i=0;i<pts.length;i++){
+        if(Math.abs(pts[i][0]-q)<0.05&&Math.abs(pts[i][1]-p)<0.05)return;
+      }
+      pts.push([Math.max(0,Math.min(100,q)),Math.max(0,Math.min(100,p))]);
+    }
+    add(0,a);            // left edge  Q=0
+    add(100,a-100*b);    // right edge Q=100
+    if(b!==0){
+      add(a/b,0);        // bottom edge P=0
+      add((a-100)/b,100);// top edge    P=100
+    }
+    return pts;
+  }
+
   function classify(ped){
     var a=Math.abs(ped);
     if(a<0.05)return'Perfectly Inelastic';
@@ -45,19 +67,24 @@
     ctx.textAlign='right';
     [20,40,60,80].forEach(function(v){ctx.fillText(v,M.left-8,U.toXY(0,v,M,W,H)[1]+4);});
 
-    // Draw demand curve: P = a - b*Q, clip to [0,100]x[0,100]
-    ctx.strokeStyle=C.demand; ctx.lineWidth=2.5;
-    ctx.shadowColor=C.demand; ctx.shadowBlur=10;
-    ctx.beginPath(); var started=false;
-    for(var q=0;q<=100;q+=0.5){
-      var p=a-b*q;
-      if(p<0||p>100){started=false;continue;}
-      var pt=U.toXY(q,p,M,W,H);
-      if(!started){ctx.moveTo(pt[0],pt[1]);started=true;}else ctx.lineTo(pt[0],pt[1]);
+    // Demand line P = a - b*Q, drawn as one clean clipped segment
+    var clip=clipLine(a,b);
+    if(clip.length>=2){
+      var p0=U.toXY(clip[0][0],clip[0][1],M,W,H);
+      var p1=U.toXY(clip[1][0],clip[1][1],M,W,H);
+      ctx.strokeStyle=C.demand; ctx.lineWidth=2.5; ctx.lineCap='round';
+      ctx.shadowColor=C.demand; ctx.shadowBlur=10;
+      ctx.beginPath(); ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]); ctx.stroke();
+      ctx.shadowBlur=0; ctx.lineCap='butt';
+      // "D" label by the upper end of the line
+      var topPt=clip[0][1]>=clip[1][1]?clip[0]:clip[1];
+      var lpt=U.toXY(topPt[0],topPt[1],M,W,H);
+      ctx.fillStyle=C.demand; ctx.font='italic 15px "Latin Modern Roman",Georgia,serif';
+      ctx.textAlign='left'; ctx.shadowColor=C.demand; ctx.shadowBlur=6;
+      ctx.fillText('D',lpt[0]+8,lpt[1]+5); ctx.shadowBlur=0;
     }
-    ctx.stroke(); ctx.shadowBlur=0;
 
-    // Midpoint dot and drop-lines
+    // Midpoint dot and drop-lines (pivot where PED is measured)
     var mp=U.toXY(50,50,M,W,H);
     U.dropLines(ctx,mp[0],mp[1],M,H,C.equil);
     U.dot(ctx,mp[0],mp[1],C.equil,5.5);
@@ -71,18 +98,6 @@
     ctx.fillText('PED = −'+pedStr,M.left+8,M.top+20);
     ctx.font='12px "Latin Modern Roman",Georgia,serif';
     ctx.fillText(lbl,M.left+8,M.top+36);
-    ctx.shadowBlur=0;
-
-    // Curve label
-    ctx.fillStyle=C.demand; ctx.font='italic 14px "Latin Modern Roman",Georgia,serif';
-    ctx.textAlign='left'; ctx.shadowColor=C.demand; ctx.shadowBlur=6;
-    // Place label near right end of curve
-    var labelQ=Math.min(85, (100-a/b>0)?100-a/b-2:85);
-    var labelP=a-b*labelQ;
-    if(labelP>=2&&labelP<=98){
-      var lpt=U.toXY(labelQ,labelP,M,W,H);
-      ctx.fillText('D',lpt[0]+6,lpt[1]-4);
-    }
     ctx.shadowBlur=0;
 
     // Update UI spans

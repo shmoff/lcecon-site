@@ -19,7 +19,7 @@ var InflationChart = (function () {
   var EUROSTAT_URL =
     'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/' +
     'prc_hicp_aind?geo=IE&geo=EU27_2020&coicop=CP00&unit=INX_A_AVG' +
-    '&time=2015:2024&sinceTimePeriod=2015&format=JSON';
+    '&sinceTimePeriod=2015&format=JSON';
 
   // Static fallback data (index values 2015=100), rates will be computed
   var FALLBACK_INDICES = {

@@ -287,7 +287,7 @@ var FiscalDashboard = (function () {
 
   // ── Data fetch ───────────────────────────────────────────────────────────────
   var BASE = 'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1';
-  var COMMON = '&unit=PC_GDP&time=2010:2024&sinceTimePeriod=2010&format=JSON';
+  var COMMON = '&sector=S13&unit=PC_GDP&sinceTimePeriod=2010&format=JSON';
 
   function fetchSeries(naItem) {
     var url = BASE + '?geo=IE&geo=EU27_2020&na_item=' + naItem + COMMON;

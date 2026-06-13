@@ -28,15 +28,13 @@ var CreditCreation = (function () {
   var ecbRate = null; // fetched live value
   var ecbLabel = '3.25% (ECB, 2024, fallback)';
 
-  /* ── canvas setup ── */
+  /* ── canvas setup ── full width, matches the other chart canvases ── */
   function setupCanvas() {
-    var dpr    = window.devicePixelRatio || 1;
-    var parent = canvas.parentElement;
-    var W = Math.min(Math.round(parent.getBoundingClientRect().width - 32), 860);
-    var H = 320;
+    var dpr = window.devicePixelRatio || 1;
+    var W = canvas.offsetWidth;
+    var H = 340;
     canvas.width  = W * dpr;
     canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
     canvas.style.height = H + 'px';
     ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
@@ -101,127 +99,139 @@ var CreditCreation = (function () {
     updateLabels(inp);
     var result = computeRounds(inp);
 
-    var plotW = W - M.left - M.right;
-    var plotH = H - M.top  - M.bottom;
-
-    var allVals = result.deposits.concat(result.loans);
-    var yMax    = Math.max.apply(null, allVals) * 1.18;
-    if (yMax === 0) yMax = 1;
-
     /* background */
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, W, H);
 
-    /* grid */
-    ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1;
-    for (var gi = 1; gi <= 5; gi++) {
-      var gy = M.top + (gi / 5) * plotH;
-      ctx.beginPath(); ctx.moveTo(M.left, gy); ctx.lineTo(W - M.right, gy); ctx.stroke();
+    /* ── header: title + summary stats (responsive: one line, else stacked) ── */
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = COLORS.text;
+    ctx.font = 'bold 14px "Latin Modern Roman",Georgia,serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Credit Creation by Round', W / 2, 22);
+
+    var mult = isFinite(result.effectiveMult)
+      ? result.effectiveMult.toFixed(2) + '×' : '∞';
+    var parts = [
+      { t: 'Effective multiplier: ' + mult,                        c: COLORS.accent },
+      { t: 'Total credit created: ' + fmtEuro(result.totalCredit), c: COLORS.green  },
+      { t: 'ECB Deposit Facility Rate: ' + ecbLabel,               c: COLORS.equil  }
+    ];
+    ctx.font = '11.5px "Latin Modern Roman",Georgia,serif';
+    var sep = '     ';
+    var sepW = ctx.measureText(sep).width;
+    var widths = parts.map(function (p) { return ctx.measureText(p.t).width; });
+    var oneLineW = widths.reduce(function (a, b) { return a + b; }, 0)
+                 + sepW * (parts.length - 1);
+
+    var headerBottom;
+    if (oneLineW <= W - 16) {
+      /* fits on one centred line */
+      var sx = W / 2 - oneLineW / 2;
+      ctx.textAlign = 'left';
+      parts.forEach(function (p, i) {
+        ctx.fillStyle = p.c;
+        ctx.fillText(p.t, sx, 42);
+        sx += widths[i] + sepW;
+      });
+      headerBottom = 50;
+    } else {
+      /* stack each stat on its own centred row (narrow screens) */
+      ctx.textAlign = 'center';
+      parts.forEach(function (p, i) {
+        ctx.fillStyle = p.c;
+        ctx.fillText(p.t, W / 2, 40 + i * 17);
+      });
+      headerBottom = 40 + parts.length * 17 - 5;
     }
+
+    /* ── plot geometry (sits below whatever height the header needed) ── */
+    M = { top: headerBottom + 14, right: 22, bottom: 58, left: 66 };
+    var plotW = W - M.left - M.right;
+    var plotH = H - M.top  - M.bottom;
+    var plotBottom = M.top + plotH;
+
+    var allVals = result.deposits.concat(result.loans);
+    var yMax    = Math.max.apply(null, allVals) * 1.15;
+    if (yMax <= 0) yMax = 1;
+
+    function toY(v) { return plotBottom - (v / yMax) * plotH; }
+
+    /* grid + y-axis labels */
+    for (var yi = 0; yi <= 5; yi++) {
+      var yv = (yi / 5) * yMax;
+      var yy = toY(yv);
+      ctx.strokeStyle = COLORS.grid; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(M.left, yy); ctx.lineTo(W - M.right, yy); ctx.stroke();
+      ctx.fillStyle = COLORS.muted;
+      ctx.font = '10px "Latin Modern Roman",Georgia,serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText(fmtEuro(yv), M.left - 8, yy);
+    }
+    ctx.textBaseline = 'alphabetic';
 
     /* axes */
     ctx.strokeStyle = COLORS.axis; ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(M.left, M.top);
-    ctx.lineTo(M.left, H - M.bottom);
-    ctx.lineTo(W - M.right, H - M.bottom);
+    ctx.lineTo(M.left, plotBottom);
+    ctx.lineTo(W - M.right, plotBottom);
     ctx.stroke();
 
-    /* y-axis labels */
-    ctx.fillStyle = COLORS.muted;
-    ctx.font = '10px "Latin Modern Roman",Georgia,serif';
-    ctx.textAlign = 'right';
-    for (var yi = 0; yi <= 5; yi++) {
-      var yv = (yi / 5) * yMax;
-      var yy = H - M.bottom - (yv / yMax) * plotH;
-      ctx.fillText(fmtEuro(yv), M.left - 5, yy + 4);
-      /* tick */
-      ctx.strokeStyle = COLORS.axis; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(M.left - 3, yy); ctx.lineTo(M.left, yy); ctx.stroke();
-    }
-
     /* bars */
-    var groupW  = plotW / ROUNDS;
-    var barW    = Math.min(groupW * 0.32, 38);
-    var barGap  = Math.min(groupW * 0.06, 6);
-
-    function toY(v) { return H - M.bottom - (v / yMax) * plotH; }
+    var groupW = plotW / ROUNDS;
+    var barW   = Math.min(groupW * 0.30, 34);
+    var barGap = 5;
 
     for (var r = 0; r < ROUNDS; r++) {
       var gCentre = M.left + (r + 0.5) * groupW;
       var dep  = result.deposits[r];
       var loan = result.loans[r];
 
+      var depX  = gCentre - barGap / 2 - barW;
+      var loanX = gCentre + barGap / 2;
+
       /* deposit bar (blue) */
-      var depBarH = Math.max(0, (dep / yMax) * plotH);
-      var depX    = gCentre - barGap / 2 - barW;
       ctx.fillStyle = COLORS.accent;
       ctx.shadowColor = COLORS.accent; ctx.shadowBlur = 6;
-      ctx.fillRect(depX, toY(dep), barW, depBarH);
-      ctx.shadowBlur = 0;
-
+      ctx.fillRect(depX, toY(dep), barW, plotBottom - toY(dep));
       /* loan bar (green) */
-      var loanBarH = Math.max(0, (loan / yMax) * plotH);
-      var loanX    = gCentre + barGap / 2;
       ctx.fillStyle = COLORS.green;
       ctx.shadowColor = COLORS.green; ctx.shadowBlur = 6;
-      ctx.fillRect(loanX, toY(loan), barW, loanBarH);
+      ctx.fillRect(loanX, toY(loan), barW, plotBottom - toY(loan));
       ctx.shadowBlur = 0;
 
-      /* x-axis label */
+      /* round label */
       ctx.fillStyle = COLORS.muted;
       ctx.font = '11px "Latin Modern Roman",Georgia,serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Round ' + (r + 1), gCentre, H - M.bottom + 16);
+      ctx.fillText('Round ' + (r + 1), gCentre, plotBottom + 18);
 
-      /* value labels above bars */
+      /* value labels above bars (only when tall enough to avoid clutter) */
       ctx.font = '9px "Latin Modern Roman",Georgia,serif';
-      if (dep > yMax * 0.03) {
+      if (dep > yMax * 0.05) {
         ctx.fillStyle = COLORS.accent;
-        ctx.fillText(fmtEuro(dep), depX + barW / 2, toY(dep) - 4);
+        ctx.fillText(fmtEuro(dep), depX + barW / 2, toY(dep) - 5);
       }
-      if (loan > yMax * 0.03) {
+      if (loan > yMax * 0.05) {
         ctx.fillStyle = COLORS.green;
-        ctx.fillText(fmtEuro(loan), loanX + barW / 2, toY(loan) - 4);
+        ctx.fillText(fmtEuro(loan), loanX + barW / 2, toY(loan) - 5);
       }
     }
 
-    /* title */
-    ctx.fillStyle = COLORS.text;
-    ctx.font = '13px "Latin Modern Roman",Georgia,serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Credit Creation by Round', W / 2, M.top - 30);
-
-    /* summary stats block */
-    var mult = isFinite(result.effectiveMult)
-      ? result.effectiveMult.toFixed(2) + 'x'
-      : '∞';
-    var stats = [
-      'Effective multiplier: ' + mult,
-      'Total credit (5 rounds): ' + fmtEuro(result.totalCredit),
-      'ECB Deposit Facility Rate: ' + ecbLabel
-    ];
-    ctx.font = '11px "Latin Modern Roman",Georgia,serif';
-    ctx.textAlign = 'left';
-    stats.forEach(function (s, i) {
-      ctx.fillStyle = i === 2 ? COLORS.equil : COLORS.muted;
-      ctx.fillText(s, M.left, M.top - 12 + i * 14);
-    });
-
-    /* legend */
-    var lx = W - M.right - 130;
-    var ly = M.top + 6;
+    /* legend — top-right inside plot (later-round bars are short, no overlap) */
+    var lx = W - M.right - 118, ly = M.top + 16;
     [
       { color: COLORS.accent, label: 'Deposit' },
       { color: COLORS.green,  label: 'New loan' }
     ].forEach(function (leg, i) {
-      var liy = ly + i * 16;
+      var liy = ly + i * 18;
       ctx.fillStyle = leg.color;
-      ctx.fillRect(lx, liy - 8, 14, 10);
-      ctx.fillStyle = leg.color;
+      ctx.fillRect(lx, liy - 9, 13, 11);
+      ctx.fillStyle = COLORS.text;
       ctx.font = '11px "Latin Modern Roman",Georgia,serif';
       ctx.textAlign = 'left';
-      ctx.fillText(leg.label, lx + 18, liy);
+      ctx.fillText(leg.label, lx + 19, liy);
     });
 
     /* y-axis rotated label */
@@ -229,7 +239,7 @@ var CreditCreation = (function () {
     ctx.fillStyle = COLORS.muted;
     ctx.font = '11px "Latin Modern Roman",Georgia,serif';
     ctx.textAlign = 'center';
-    ctx.translate(13, (M.top + H - M.bottom) / 2);
+    ctx.translate(15, M.top + plotH / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.fillText('Amount (€)', 0, 0);
     ctx.restore();
