@@ -56,81 +56,180 @@
     <section class="section" id="ca-interactive">
       <h2>Interactive: Comparative Advantage Calculator</h2>
       <p class="kicker">Comparative advantage exists when a country can produce a good at a lower <em>opportunity cost</em> than another country — even if one country is absolutely better at producing both goods.</p>
-      <p style="color:var(--muted);font-size:.88rem;margin-bottom:var(--s3);">Enter how many units each country can produce per hour of labour.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s3);">
-        <div>
-          <h3 style="margin-bottom:8px;">Country A</h3>
-          <div class="calc-row">
-            <label><span class="lbl">Good X (units/hr):</span>
-              <input type="number" id="ca-ax" value="6" min="0.1" step="0.1" style="width:80px;" />
-            </label>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:var(--s3);">Enter how many units each country can produce per hour of labour, then read off who should specialise in what.</p>
+
+      <!-- Input grid -->
+      <div class="formula-visual" style="align-items:flex-start;gap:var(--s4);">
+        <!-- Country A -->
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:190px;">
+          <div style="font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:2px;">Country A</div>
+          <div class="formula-cell">
+            <span class="cell-label">Good X (units/hr)</span>
+            <input type="number" id="ca-ax" value="6" min="0.1" step="0.1"
+              style="background:var(--surface2);border:1.5px solid var(--border-light);border-radius:var(--r-sm);
+                     color:var(--accent);font-family:'Latin Modern Roman',Georgia,serif;font-size:1.25rem;
+                     font-weight:700;padding:10px 18px;width:100%;text-align:center;outline:none;
+                     transition:border-color .15s;" />
           </div>
-          <div class="calc-row">
-            <label><span class="lbl">Good Y (units/hr):</span>
-              <input type="number" id="ca-ay" value="4" min="0.1" step="0.1" style="width:80px;" />
-            </label>
+          <div class="formula-cell">
+            <span class="cell-label">Good Y (units/hr)</span>
+            <input type="number" id="ca-ay" value="4" min="0.1" step="0.1"
+              style="background:var(--surface2);border:1.5px solid var(--border-light);border-radius:var(--r-sm);
+                     color:var(--accent);font-family:'Latin Modern Roman',Georgia,serif;font-size:1.25rem;
+                     font-weight:700;padding:10px 18px;width:100%;text-align:center;outline:none;
+                     transition:border-color .15s;" />
           </div>
         </div>
-        <div>
-          <h3 style="margin-bottom:8px;">Country B</h3>
-          <div class="calc-row">
-            <label><span class="lbl">Good X (units/hr):</span>
-              <input type="number" id="ca-bx" value="3" min="0.1" step="0.1" style="width:80px;" />
-            </label>
+
+        <div class="formula-op" style="align-self:center;">vs</div>
+
+        <!-- Country B -->
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:190px;">
+          <div style="font-size:.72rem;color:var(--red);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:2px;">Country B</div>
+          <div class="formula-cell">
+            <span class="cell-label">Good X (units/hr)</span>
+            <input type="number" id="ca-bx" value="3" min="0.1" step="0.1"
+              style="background:var(--surface2);border:1.5px solid var(--border-light);border-radius:var(--r-sm);
+                     color:var(--red);font-family:'Latin Modern Roman',Georgia,serif;font-size:1.25rem;
+                     font-weight:700;padding:10px 18px;width:100%;text-align:center;outline:none;
+                     transition:border-color .15s;" />
           </div>
-          <div class="calc-row">
-            <label><span class="lbl">Good Y (units/hr):</span>
-              <input type="number" id="ca-by" value="4" min="0.1" step="0.1" style="width:80px;" />
-            </label>
+          <div class="formula-cell">
+            <span class="cell-label">Good Y (units/hr)</span>
+            <input type="number" id="ca-by" value="4" min="0.1" step="0.1"
+              style="background:var(--surface2);border:1.5px solid var(--border-light);border-radius:var(--r-sm);
+                     color:var(--red);font-family:'Latin Modern Roman',Georgia,serif;font-size:1.25rem;
+                     font-weight:700;padding:10px 18px;width:100%;text-align:center;outline:none;
+                     transition:border-color .15s;" />
           </div>
         </div>
       </div>
-      <div class="calc-result">
-        <div class="result-main" id="ca-result" style="font-size:1.1rem;line-height:1.5;"></div>
-        <div class="result-sub" id="ca-sub"></div>
+
+      <!-- Results -->
+      <div class="calc-result" style="margin-top:var(--s3);">
+        <!-- Opportunity cost breakdown -->
+        <div id="ca-oc-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s3);">
+          <div>
+            <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Opportunity Costs</div>
+            <div id="ca-oc-a" style="font-size:.9rem;line-height:1.8;color:var(--text);"></div>
+          </div>
+          <div>
+            <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Advantages</div>
+            <div id="ca-adv" style="font-size:.9rem;line-height:1.8;color:var(--text);"></div>
+          </div>
+        </div>
+        <!-- Main verdict -->
+        <div class="result-main" id="ca-result" style="font-size:1rem;line-height:1.6;"></div>
+        <div class="result-sub" id="ca-sub" style="margin-top:8px;"></div>
       </div>
+
       <script>
       (function(){
+        var ACCENT='#58c4dd', RED='#fc6255', GREEN='#83c167', YELLOW='#f0ac5f', MUTED='#8888aa';
+
+        function span(text,color){
+          return '<span style="color:'+color+';font-weight:700;">'+text+'</span>';
+        }
+
         function upd(){
           var ax=parseFloat(document.getElementById('ca-ax').value)||0;
           var ay=parseFloat(document.getElementById('ca-ay').value)||0;
           var bx=parseFloat(document.getElementById('ca-bx').value)||0;
           var by=parseFloat(document.getElementById('ca-by').value)||0;
+
           if(ax===0||ay===0||bx===0||by===0){
             document.getElementById('ca-result').textContent='Enter values greater than 0.';
+            document.getElementById('ca-oc-a').innerHTML='';
+            document.getElementById('ca-adv').innerHTML='';
+            document.getElementById('ca-sub').textContent='';
             return;
           }
-          // Opportunity cost of X for each country = units of Y given up to make 1 unit of X
-          var ocAx=ay/ax; // units of Y country A gives up per unit of X
-          var ocBx=by/bx;
-          var ocAy=ax/ay; // units of X country A gives up per unit of Y
-          var ocBy=bx/by;
-          var absAdvA=(ax>bx&&ay>by)?'Country A has an absolute advantage in both goods.':'';
-          var absAdvB=(bx>ax&&by>ay)?'Country B has an absolute advantage in both goods.':'';
-          var compAdvX=ocAx<ocBx?'Country A':'Country B';
-          var compAdvY=ocAy<ocBy?'Country A':'Country B';
-          var res='';
-          if(compAdvX===compAdvY){
-            res='Both goods have comparative advantage in the same country — check your inputs.';
-          } else {
-            res=compAdvX+' has a comparative advantage in Good X\n(OC of X: A = '+ocAx.toFixed(2)+'Y, B = '+ocBx.toFixed(2)+'Y)\n\n'+compAdvY+' has a comparative advantage in Good Y\n(OC of Y: A = '+ocAy.toFixed(2)+'X, B = '+ocBy.toFixed(2)+'X)';
-          }
+
+          // OC: units of the other good given up to produce 1 unit of this good
+          var ocAx=ay/ax; // Country A: Y given up per unit of X
+          var ocBx=by/bx; // Country B: Y given up per unit of X
+          var ocAy=ax/ay; // Country A: X given up per unit of Y
+          var ocBy=bx/by; // Country B: X given up per unit of Y
+
+          // Absolute advantage
+          var absX = ax>bx ? 'A' : (bx>ax ? 'B' : 'Neither');
+          var absY = ay>by ? 'A' : (by>ay ? 'B' : 'Neither');
+
+          // Comparative advantage (lower OC wins)
+          var compX = ocAx<ocBx ? 'A' : (ocBx<ocAx ? 'B' : null);
+          var compY = ocAy<ocBy ? 'A' : (ocBy<ocAy ? 'B' : null);
+
+          // OC panel
+          var ocHTML =
+            'OC of X for A: '+span(ocAx.toFixed(2)+'Y',ACCENT)+'<br>'+
+            'OC of X for B: '+span(ocBx.toFixed(2)+'Y',RED)+'<br>'+
+            'OC of Y for A: '+span(ocAy.toFixed(2)+'X',ACCENT)+'<br>'+
+            'OC of Y for B: '+span(ocBy.toFixed(2)+'X',RED);
+          document.getElementById('ca-oc-a').innerHTML=ocHTML;
+
+          // Advantages panel
+          var advHTML =
+            'Abs. adv. in X: '+span('Country '+(absX==='Neither'?'—':absX), absX==='A'?ACCENT:absX==='B'?RED:MUTED)+'<br>'+
+            'Abs. adv. in Y: '+span('Country '+(absY==='Neither'?'—':absY), absY==='A'?ACCENT:absY==='B'?RED:MUTED)+'<br>'+
+            'Comp. adv. in X: '+span(compX?'Country '+compX:'Equal', compX==='A'?ACCENT:compX==='B'?RED:MUTED)+'<br>'+
+            'Comp. adv. in Y: '+span(compY?'Country '+compY:'Equal', compY==='A'?ACCENT:compY==='B'?RED:MUTED);
+          document.getElementById('ca-adv').innerHTML=advHTML;
+
+          // Main verdict
           var resultEl=document.getElementById('ca-result');
-          resultEl.style.whiteSpace='pre-line';
-          resultEl.textContent=res;
           var subEl=document.getElementById('ca-sub');
-          var sub='';
-          if(absAdvA)sub+=absAdvA+' ';
-          if(absAdvB)sub+=absAdvB+' ';
-          sub+='Trade is mutually beneficial when each country specialises in the good where its opportunity cost is lowest.';
-          subEl.textContent=sub;
+
+          if(!compX||!compY||compX===compY){
+            resultEl.innerHTML='<span style="color:'+YELLOW+';">Check inputs — comparative advantages cannot both fall on the same country.</span>';
+            subEl.textContent='';
+            return;
+          }
+
+          var xWinner = compX==='A' ? span('Country A',ACCENT) : span('Country B',RED);
+          var yWinner = compY==='A' ? span('Country A',ACCENT) : span('Country B',RED);
+
+          resultEl.innerHTML =
+            xWinner+' should specialise in <strong>Good X</strong> (lower opportunity cost: '+
+            (compX==='A'?ocAx.toFixed(2):ocBx.toFixed(2))+'Y vs '+
+            (compX==='A'?ocBx.toFixed(2):ocAx.toFixed(2))+'Y).<br>'+
+            yWinner+' should specialise in <strong>Good Y</strong> (lower opportunity cost: '+
+            (compY==='A'?ocAy.toFixed(2):ocBy.toFixed(2))+'X vs '+
+            (compY==='A'?ocBy.toFixed(2):ocAy.toFixed(2))+'X).';
+
+          var absNote='';
+          if(ax>bx&&ay>by) absNote='Country A has an absolute advantage in both goods, yet trade still benefits both — this is the core insight of comparative advantage. ';
+          if(bx>ax&&by>ay) absNote='Country B has an absolute advantage in both goods, yet trade still benefits both — this is the core insight of comparative advantage. ';
+          subEl.innerHTML='<span style="color:'+MUTED+';">'+absNote+'Each country gains by exporting the good where its opportunity cost is lowest and importing the other.</span>';
         }
+
         ['ca-ax','ca-ay','ca-bx','ca-by'].forEach(function(id){
-          document.getElementById(id).addEventListener('input',upd);
+          var el=document.getElementById(id);
+          if(el){
+            el.addEventListener('input',upd);
+            el.addEventListener('focus',function(){ this.style.borderColor='var(--accent)'; });
+            el.addEventListener('blur', function(){ this.style.borderColor='var(--border-light)'; });
+          }
         });
         upd();
       })();
       </script>
+    </section>
+
+    <!-- Exchange Rate Interactive -->
+    <section id="exchange-rate-interactive" class="section">
+      <h2>Live Exchange Rates</h2>
+      <p class="lead" style="color:var(--muted);font-size:.95rem;margin-bottom:var(--s3);max-width:70ch;">Euro exchange rates against major world currencies, sourced live from the ECB reference rate database. Click a pair to view its history; default view shows all pairs indexed to January 2020 = 100.</p>
+      <div class="btn-group" style="margin-bottom:1rem;">
+        <button id="exr-btn-usd" class="exr-btn btn-toggle">EUR/USD</button>
+        <button id="exr-btn-gbp" class="exr-btn btn-toggle">EUR/GBP</button>
+        <button id="exr-btn-jpy" class="exr-btn btn-toggle">EUR/JPY</button>
+        <button id="exr-btn-cny" class="exr-btn btn-toggle">EUR/CNY</button>
+        <button id="exr-btn-aud" class="exr-btn btn-toggle">EUR/AUD</button>
+      </div>
+      <div style="background:#12121f;border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3);">
+        <canvas id="exchange-canvas" style="width:100%;display:block;border-radius:4px;"></canvas>
+      </div>
+      <p style="font-size:.78rem;color:var(--subtle);font-style:italic;margin-top:10px;">Source: ECB Statistical Data Warehouse — daily reference rates, monthly averages shown. Note: USD/ARS (Argentine Peso) excluded — ECB does not publish ARS reference rates due to Argentina's dual exchange rate system.</p>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -183,5 +282,6 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/exchange-rate.js"></script>
 </body>
 </html>

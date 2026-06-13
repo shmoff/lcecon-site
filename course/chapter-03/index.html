@@ -56,7 +56,21 @@
 
     <section class="section" id="sus-interactive">
       <h2>Interactive: The Three Pillars of Sustainability</h2>
-      <p class="kicker">Sustainable development requires balance across three dimensions: Economic, Environmental, and Social. Adjust the sliders to explore trade-offs between the pillars.</p>
+      <p class="kicker">Sustainable development requires balance across three dimensions. Adjust the sliders to explore trade-offs — as in real policy, pushing one pillar often comes at the cost of another.</p>
+      <div class="context-pills">
+        <span class="context-pill">
+          <span class="pill-yellow">Economic ▶</span>
+          <strong>e.g.</strong> Ireland GDP growth, FDI, employment rates, living standards
+        </span>
+        <span class="context-pill">
+          <span class="pill-green">Environmental ▶</span>
+          <strong>e.g.</strong> Carbon emissions, renewable energy %, biodiversity loss, plastic waste
+        </span>
+        <span class="context-pill">
+          <span class="pill-accent">Social ▶</span>
+          <strong>e.g.</strong> Income inequality (Gini), healthcare access, education levels, housing availability
+        </span>
+      </div>
       <div class="diagram-wrap">
         <div class="diagram-controls">
           <label>Economic growth: <strong id="sus-eco-val">70</strong>%
@@ -70,17 +84,50 @@
           </label>
         </div>
         <canvas id="sus-canvas"></canvas>
-        <p class="diagram-caption">The shaded triangle represents the current balance. A perfect equilateral triangle indicates full balance across all three pillars.</p>
+        <div class="context-pills" style="margin-top:var(--s3);">
+          <span class="context-pill" id="sus-eg-eco"><span class="pill-yellow">Economic:</span> <span id="sus-eco-example">High growth, but at what cost?</span></span>
+          <span class="context-pill" id="sus-eg-env"><span class="pill-green">Environmental:</span> <span id="sus-env-example">Moderate protection</span></span>
+          <span class="context-pill" id="sus-eg-soc"><span class="pill-accent">Social:</span> <span id="sus-soc-example">Some inequality remains</span></span>
+        </div>
+        <p class="diagram-caption">Try modelling Ireland's 2000s Celtic Tiger (high eco, low env, medium soc) vs Denmark's model (balanced) vs a resource-dependent economy (low eco, low env, low soc).</p>
       </div>
       <script>
       (function(){
         var canvas=document.getElementById('sus-canvas');
         if(!canvas)return;
         var ctx=canvas.getContext('2d');
+        var ecoExamples=[
+          'Subsistence economy — little economic activity',
+          'Developing: agriculture-dominant, low GDP/capita',
+          'Emerging: industrialising, rising living standards',
+          'Celtic Tiger-era Ireland: rapid but unbalanced growth',
+          'Strong growth with productivity gains (e.g. Ireland today)',
+          'High-income with strong FDI and services base',
+          'Top OECD performer — Norway, Switzerland',
+        ];
+        var envExamples=[
+          'Critical environmental degradation — collapse risk',
+          'Heavy pollution, little regulation (e.g. early industrialisation)',
+          'Some environmental laws, still high emissions per capita',
+          'Mixed: growing renewables but still fossil-fuel dependent',
+          'Ireland 2024: ~40% renewable electricity, still missing targets',
+          'Strong regulation, near-Paris Agreement goals',
+          'Carbon neutral / near-zero emissions (e.g. Iceland geothermal)',
+        ];
+        var socExamples=[
+          'Extreme inequality — failed state conditions',
+          'Very high Gini coefficient, limited social mobility',
+          'Some redistribution but structural inequality persists',
+          'Moderate welfare state — average EU Gini ~30',
+          'Good healthcare and education access, some housing pressure',
+          'Low inequality, universal healthcare, affordable housing',
+          'Scandinavian model — high trust, strong public services',
+        ];
+        function getExample(val, arr){ return arr[Math.min(Math.floor(val/100*6.99),6)]; }
         function setup(){
           var dpr=window.devicePixelRatio||1;
           var rect=canvas.parentElement.getBoundingClientRect();
-          var W=Math.min(Math.round(rect.width-32),420);
+          var W=Math.min(Math.round(rect.width-32),440);
           canvas.width=W*dpr;canvas.height=W*dpr;
           canvas.style.width=W+'px';canvas.style.height=W+'px';
           ctx.scale(dpr,dpr);draw(W);
@@ -93,20 +140,25 @@
           var env=parseFloat(document.getElementById('sus-env').value)/100;
           var soc=parseFloat(document.getElementById('sus-soc').value)/100;
           var pts=[[cx,cy-r],[cx+r*Math.sin(2*Math.PI/3),cy-r*Math.cos(2*Math.PI/3)],[cx-r*Math.sin(2*Math.PI/3),cy-r*Math.cos(2*Math.PI/3)]];
-          ctx.strokeStyle='rgba(80,80,106,0.4)';ctx.lineWidth=1;
-          ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);ctx.lineTo(pts[1][0],pts[1][1]);ctx.lineTo(pts[2][0],pts[2][1]);ctx.closePath();ctx.stroke();
+          // Concentric guide rings
+          [0.33,0.67,1.0].forEach(function(frac){
+            ctx.strokeStyle='rgba(80,80,106,'+(0.15+frac*0.1)+')';ctx.lineWidth=1;
+            ctx.beginPath();
+            var gp=pts.map(function(p){return[cx+(p[0]-cx)*frac,cy+(p[1]-cy)*frac];});
+            ctx.moveTo(gp[0][0],gp[0][1]);ctx.lineTo(gp[1][0],gp[1][1]);ctx.lineTo(gp[2][0],gp[2][1]);ctx.closePath();ctx.stroke();
+          });
           var colors=['#f0ac5f','#83c167','#9a72ac'];
           var labels=['Economic','Environmental','Social'];
           var vals=[eco,env,soc];
           pts.forEach(function(p,i){
-            ctx.strokeStyle=colors[i];ctx.lineWidth=1;ctx.globalAlpha=0.35;
+            ctx.strokeStyle=colors[i];ctx.lineWidth=1;ctx.globalAlpha=0.3;
             ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.globalAlpha=1;
             var tx=cx+(p[0]-cx)*vals[i],ty=cy+(p[1]-cy)*vals[i];
-            ctx.fillStyle=colors[i];ctx.shadowColor=colors[i];ctx.shadowBlur=10;
+            ctx.fillStyle=colors[i];ctx.shadowColor=colors[i];ctx.shadowBlur=12;
             ctx.beginPath();ctx.arc(tx,ty,5.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+            var lx=p[0]+(p[0]-cx)*0.14,ly=p[1]+(p[1]-cy)*0.14+4;
             ctx.font='bold 12px "Latin Modern Roman",Georgia,serif';
             ctx.fillStyle=colors[i];ctx.textAlign='center';
-            var lx=p[0]+(p[0]-cx)*0.13,ly=p[1]+(p[1]-cy)*0.13+4;
             ctx.fillText(labels[i],lx,ly);
             ctx.font='11px "Latin Modern Roman",Georgia,serif';
             ctx.fillStyle='#8888aa';
@@ -119,15 +171,22 @@
           var avg=(eco+env+soc)/3;
           var bal=1-Math.sqrt(((eco-avg)*(eco-avg)+(env-avg)*(env-avg)+(soc-avg)*(soc-avg))/3);
           ctx.fillStyle='#58c4dd';ctx.font='bold 13px "Latin Modern Roman",Georgia,serif';ctx.textAlign='center';
-          ctx.fillText('Balance: '+Math.round(bal*100)+'%',cx,cy+5);
+          ctx.fillText('Balance: '+Math.round(bal*100)+'%',cx,cy+4);
           ctx.fillStyle='#8888aa';ctx.font='10px "Latin Modern Roman",Georgia,serif';
-          ctx.fillText('(100% = perfectly equal pillars)',cx,cy+19);
+          ctx.fillText('(100% = perfectly equal across all three)',cx,cy+18);
+        }
+        function update(id){
+          var val=parseInt(document.getElementById(id).value);
+          document.getElementById(id+'-val').textContent=val;
+          if(id==='sus-eco')document.getElementById('sus-eco-example').textContent=getExample(val,ecoExamples);
+          if(id==='sus-env')document.getElementById('sus-env-example').textContent=getExample(val,envExamples);
+          if(id==='sus-soc')document.getElementById('sus-soc-example').textContent=getExample(val,socExamples);
+          draw();
         }
         ['sus-eco','sus-env','sus-soc'].forEach(function(id){
           var el=document.getElementById(id);
-          if(el)el.addEventListener('input',function(){
-            document.getElementById(id+'-val').textContent=this.value;draw();
-          });
+          if(el)el.addEventListener('input',function(){update(id);});
+          update(id);
         });
         var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(setup,80);});
         setup();

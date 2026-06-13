@@ -67,27 +67,38 @@
 
     <section class="section" id="elas-interactive">
       <h2>Interactive: Elasticity Calculator</h2>
-      <p class="kicker">Calculate Price Elasticity of Demand (PED), Price Elasticity of Supply (PES), or Income Elasticity of Demand (YED) by entering the percentage changes below.</p>
+      <p class="kicker">Select the elasticity type, then enter the percentage changes. The formula updates live — each box shows its role in the calculation.</p>
       <div class="btn-group">
         <button class="btn-toggle elas-type-btn active" id="elas-btn-ped">PED</button>
         <button class="btn-toggle elas-type-btn" id="elas-btn-pes">PES</button>
         <button class="btn-toggle elas-type-btn" id="elas-btn-yed">YED</button>
       </div>
-      <div class="calc-row" style="margin-top:14px;">
-        <label><span class="lbl" id="elas-top-lbl">% change in Qd:</span>
-          <input type="number" id="elas-num" value="-20" step="0.1" style="width:100px;" />
-          <span style="font-size:.82rem;color:var(--muted);">%</span>
-        </label>
+      <div class="formula-visual" style="margin-top:var(--s3);">
+        <div class="formula-cell">
+          <div class="cell-label" id="elas-result-label">PED</div>
+          <div class="cell-value fv-accent" id="elas-result-cell">−2.00</div>
+        </div>
+        <div class="formula-op">=</div>
+        <div class="formula-cell">
+          <div class="cell-label" id="elas-num-label">% change in Qd</div>
+          <div class="cell-value" id="elas-num-cell" style="position:relative;">
+            <input type="number" id="elas-num" value="-20" step="0.1"
+              style="background:transparent;border:none;outline:none;width:80px;font-size:1.1rem;font-weight:700;font-family:inherit;color:inherit;text-align:center;" />
+            <span style="font-size:.9rem;color:var(--muted);">%</span>
+          </div>
+        </div>
+        <div class="formula-op">÷</div>
+        <div class="formula-cell">
+          <div class="cell-label" id="elas-den-label">% change in Price</div>
+          <div class="cell-value" id="elas-den-cell" style="position:relative;">
+            <input type="number" id="elas-den" value="10" step="0.1"
+              style="background:transparent;border:none;outline:none;width:80px;font-size:1.1rem;font-weight:700;font-family:inherit;color:inherit;text-align:center;" />
+            <span style="font-size:.9rem;color:var(--muted);">%</span>
+          </div>
+        </div>
       </div>
-      <div class="calc-row">
-        <label><span class="lbl" id="elas-bot-lbl">% change in Price:</span>
-          <input type="number" id="elas-den" value="10" step="0.1" style="width:100px;" />
-          <span style="font-size:.82rem;color:var(--muted);">%</span>
-        </label>
-      </div>
+      <p class="formula-eq-label" id="elas-formula-eq">PED = %ΔQd ÷ %ΔP = (−20%) ÷ (10%) = −2.00</p>
       <div class="calc-result">
-        <div class="result-main" id="elas-value">−2.00</div>
-        <div class="result-label" id="elas-formula">PED = %ΔQd ÷ %ΔP</div>
         <div class="result-sub" id="elas-sub"></div>
         <span class="result-badge" id="elas-badge"></span>
       </div>
@@ -95,13 +106,16 @@
       (function(){
         var type='ped';
         var numEl=document.getElementById('elas-num'),denEl=document.getElementById('elas-den');
-        var valEl=document.getElementById('elas-value'),frmEl=document.getElementById('elas-formula');
+        var resultCell=document.getElementById('elas-result-cell');
+        var resultLabel=document.getElementById('elas-result-label');
+        var numLabel=document.getElementById('elas-num-label');
+        var denLabel=document.getElementById('elas-den-label');
+        var frmEq=document.getElementById('elas-formula-eq');
         var subEl=document.getElementById('elas-sub'),badge=document.getElementById('elas-badge');
-        var topLbl=document.getElementById('elas-top-lbl'),botLbl=document.getElementById('elas-bot-lbl');
         var cfg={
-          ped:{top:'% change in Qd:',bot:'% change in Price:',formula:'PED = %ΔQd ÷ %ΔP',dn:-20,dd:10},
-          pes:{top:'% change in Qs:',bot:'% change in Price:',formula:'PES = %ΔQs ÷ %ΔP',dn:15,dd:10},
-          yed:{top:'% change in Qd:',bot:'% change in Income:',formula:'YED = %ΔQd ÷ %ΔY',dn:12,dd:8},
+          ped:{result:'PED',num:'% change in Qd',den:'% change in Price',sym:'%ΔQd ÷ %ΔP',dn:-20,dd:10},
+          pes:{result:'PES',num:'% change in Qs',den:'% change in Price',sym:'%ΔQs ÷ %ΔP',dn:15,dd:10},
+          yed:{result:'YED',num:'% change in Qd',den:'% change in Income',sym:'%ΔQd ÷ %ΔY',dn:12,dd:8},
         };
         function classify(v,t){
           var a=Math.abs(v);
@@ -117,40 +131,76 @@
         function explain(v,t){
           var a=Math.abs(v).toFixed(2);
           if(t==='ped'){
-            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% fall in Qd — demand is price elastic.';
-            if(Math.abs(v)<1)return'A 1% rise in price causes only a '+a+'% fall in Qd — demand is price inelastic.';
-            return'A 1% change in price causes exactly a 1% change in Qd — unit elastic.';
+            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% fall in quantity demanded — consumers are sensitive to price (elastic). TR falls when price rises.';
+            if(Math.abs(v)<1)return'A 1% rise in price causes only a '+a+'% fall in Qd — consumers are price insensitive (inelastic). TR rises when price rises.';
+            return'A 1% change in price causes exactly a 1% change in Qd — unit elastic. TR is unchanged.';
           }
           if(t==='pes'){
-            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% rise in Qs — supply is price elastic.';
-            return'A 1% rise in price causes only a '+a+'% rise in Qs — supply is price inelastic.';
+            if(Math.abs(v)>1)return'A 1% rise in price causes a '+a+'% rise in Qs — producers can respond quickly (elastic supply).';
+            return'A 1% rise in price causes only a '+a+'% rise in Qs — producers cannot easily expand output (inelastic supply).';
           }
-          if(v<0)return'As income rises, demand falls — this is an inferior good (e.g. own-brand foods, bus travel).';
-          if(v<1)return'As income rises, demand rises proportionally less (YED = '+a+') — a normal necessity (e.g. food, utilities).';
-          return'As income rises, demand rises more than proportionally (YED = '+a+') — a luxury good (e.g. foreign holidays, premium cars).';
+          if(v<0)return'As income rises, demand falls — this is an inferior good (e.g. own-brand foods, bus travel). Consumers switch to normal goods.';
+          if(v<1)return'As income rises, demand rises by less than proportionally (YED = '+a+') — a normal necessity (e.g. food, utilities, public transport).';
+          return'As income rises, demand rises more than proportionally (YED = '+a+') — a luxury good (e.g. foreign holidays, premium cars, jewellery).';
         }
         function update(){
           var n=parseFloat(numEl.value)||0,d=parseFloat(denEl.value)||0;
-          if(d===0){valEl.textContent='∞';subEl.textContent='Cannot divide by zero.';badge.className='result-badge';badge.textContent='';return;}
-          var v=n/d,c=classify(v,type);
-          valEl.textContent=v.toFixed(2);
-          frmEl.textContent=cfg[type].formula+' = '+n+'% ÷ '+d+'% = '+v.toFixed(2);
+          if(d===0){resultCell.textContent='∞';resultCell.className='cell-value fv-muted';subEl.textContent='Cannot divide by zero.';badge.className='result-badge';badge.textContent='';return;}
+          var v=n/d,c=cfg[type];
+          var vStr=v.toFixed(2);
+          resultCell.textContent=vStr;
+          var a=Math.abs(v);
+          if(type==='yed'){
+            resultCell.className='cell-value '+(v<0?'fv-red':v<1?'fv-accent':'fv-green');
+          } else {
+            resultCell.className='cell-value '+(a>1?'fv-green':a<1?'fv-red':'fv-yellow');
+          }
+          frmEq.textContent=c.result+' = '+c.sym+' = ('+n+'%) ÷ ('+d+'%) = '+vStr;
+          var cl=classify(v,type);
           subEl.textContent=explain(v,type);
-          badge.className='result-badge '+c.cls;badge.textContent=c.txt;
+          badge.className='result-badge '+cl.cls;badge.textContent=cl.txt;
         }
         document.querySelectorAll('.elas-type-btn').forEach(function(btn){
           btn.addEventListener('click',function(){
             type=this.id.replace('elas-btn-','');
             document.querySelectorAll('.elas-type-btn').forEach(function(b){b.classList.remove('active');});
             this.classList.add('active');
-            topLbl.textContent=cfg[type].top;botLbl.textContent=cfg[type].bot;
-            numEl.value=cfg[type].dn;denEl.value=cfg[type].dd;update();
+            var c=cfg[type];
+            resultLabel.textContent=c.result;
+            numLabel.textContent=c.num;
+            denLabel.textContent=c.den;
+            numEl.value=c.dn;denEl.value=c.dd;update();
           });
         });
         [numEl,denEl].forEach(function(el){el.addEventListener('input',update);});
         update();
       })();
       </script>
+    </section>
+
+    <section class="section" id="elas-slope-interactive">
+      <h2>Interactive: Visualising Elasticity on the Demand Curve</h2>
+      <p class="kicker">The slope of the demand curve reflects price elasticity. Drag the slider from perfectly inelastic (vertical — consumers buy the same amount regardless of price) to perfectly elastic (horizontal — consumers will only buy at one price).</p>
+      <div class="diagram-wrap">
+        <div class="diagram-controls" style="margin-bottom:16px;">
+          <label>Elasticity: <strong style="color:var(--accent);">PED = </strong><strong id="elas-slope-ped-val" style="color:var(--accent);">−1.00</strong> &nbsp; <strong id="elas-slope-label" style="color:var(--yellow);">Unit Elastic</strong>
+            <input type="range" id="elas-slope-slider" min="0" max="100" value="50" />
+          </label>
+          <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:2px;">
+            <span>← Perfectly Inelastic (PED = 0)</span>
+            <span>Unit Elastic (PED = −1)</span>
+            <span>Perfectly Elastic (PED → ∞) →</span>
+          </div>
+        </div>
+        <canvas id="elas-slope-canvas"></canvas>
+        <div class="diagram-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> Demand curve (D)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#f0ac5f;border-radius:50%;"></span> Reference point (Q=50, P=50)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#83c167;"></span> Elastic (|PED| &gt; 1)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:#fc6255;"></span> Inelastic (|PED| &lt; 1)</span>
+        </div>
+        <p class="diagram-caption">Note: PED varies along a linear demand curve — it equals −1 only at the midpoint. The slider moves the entire curve to show how different slopes correspond to different elasticity values at the same reference point.</p>
+      </div>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -204,5 +254,7 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/econ-utils.js"></script>
+  <script src="/assets/js/elasticity-slope.js"></script>
 </body>
 </html>

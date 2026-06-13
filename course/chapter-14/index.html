@@ -50,36 +50,67 @@
     </section>
 
     <section class="section" id="cpi-interactive">
-      <h2>Interactive: CPI &amp; Fisher Equation</h2>
-      <p class="kicker">Calculate the Consumer Price Index (CPI) from a basket of goods, then use the Fisher equation to find the real interest rate from the nominal rate and inflation.</p>
-      <h3 style="margin-top:var(--s3);margin-bottom:8px;">CPI Calculator</h3>
-      <div class="calc-row">
-        <label><span class="lbl">Base year basket cost (€):</span>
-          <input type="number" id="cpi-base" value="500" step="1" min="1" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Current year basket cost (€):</span>
-          <input type="number" id="cpi-current" value="540" step="1" min="1" style="width:100px;" />
-        </label>
+      <h2>Interactive: CPI &amp; Real Interest Rates</h2>
+      <p class="kicker">Two essential tools for measuring and adjusting for inflation. The CPI measures price changes over time; the Fisher equation separates nominal from real interest rates.</p>
+
+      <h3 style="margin-bottom:8px;margin-top:var(--s3);">Consumer Price Index (CPI)</h3>
+      <p class="kicker" style="margin-bottom:var(--s3);">CPI = (Cost of basket in current year ÷ Cost in base year) × 100. The base year always equals 100.</p>
+      <div class="formula-visual">
+        <div class="formula-cell">
+          <div class="cell-label">CPI</div>
+          <div class="cell-value fv-accent" id="cpi-result-cell">108.0</div>
+        </div>
+        <div class="formula-op">=</div>
+        <div class="formula-cell">
+          <div class="cell-label">Current basket (€)</div>
+          <div class="cell-value" style="position:relative;">
+            <input type="number" id="cpi-current" value="540" step="1" min="1"
+              style="background:transparent;border:none;outline:none;width:70px;font-size:1.1rem;font-weight:700;font-family:inherit;color:var(--text);text-align:center;" />
+          </div>
+        </div>
+        <div class="formula-op">÷</div>
+        <div class="formula-cell">
+          <div class="cell-label">Base year basket (€)</div>
+          <div class="cell-value" style="position:relative;">
+            <input type="number" id="cpi-base" value="500" step="1" min="1"
+              style="background:transparent;border:none;outline:none;width:70px;font-size:1.1rem;font-weight:700;font-family:inherit;color:var(--text);text-align:center;" />
+          </div>
+        </div>
+        <div class="formula-op">×</div>
+        <div class="formula-cell">
+          <div class="cell-label">Multiplier</div>
+          <div class="cell-value fv-muted">100</div>
+        </div>
       </div>
-      <div class="calc-result" style="margin-bottom:var(--s3);">
-        <div class="result-main" id="cpi-result">108.0</div>
-        <div class="result-label">Consumer Price Index (base year = 100)</div>
-        <div class="result-sub" id="cpi-sub">Inflation rate: +8.0% since the base year.</div>
+      <p class="formula-eq-label" id="cpi-sub">Inflation rate: +8.0% since the base year.</p>
+
+      <h3 style="margin-bottom:8px;margin-top:var(--s4);">Fisher Equation — Real Interest Rate</h3>
+      <p class="kicker" style="margin-bottom:var(--s3);">Real rate ≈ Nominal rate − Inflation rate. Corrects for the erosion of purchasing power.</p>
+      <div class="formula-visual">
+        <div class="formula-cell">
+          <div class="cell-label">Real Rate</div>
+          <div class="cell-value fv-accent" id="fisher-result-cell">3.5%</div>
+        </div>
+        <div class="formula-op">≈</div>
+        <div class="formula-cell">
+          <div class="cell-label">Nominal Rate (%)</div>
+          <div class="cell-value" style="position:relative;">
+            <input type="number" id="fisher-nom" value="5.5" step="0.1"
+              style="background:transparent;border:none;outline:none;width:60px;font-size:1.1rem;font-weight:700;font-family:inherit;color:var(--text);text-align:center;" />
+            <span style="font-size:.9rem;color:var(--muted);">%</span>
+          </div>
+        </div>
+        <div class="formula-op">−</div>
+        <div class="formula-cell">
+          <div class="cell-label">Inflation Rate (%)</div>
+          <div class="cell-value" style="position:relative;">
+            <input type="number" id="fisher-inf" value="2.0" step="0.1"
+              style="background:transparent;border:none;outline:none;width:60px;font-size:1.1rem;font-weight:700;font-family:inherit;color:var(--text);text-align:center;" />
+            <span style="font-size:.9rem;color:var(--muted);">%</span>
+          </div>
+        </div>
       </div>
-      <h3 style="margin-bottom:8px;">Fisher Equation</h3>
-      <div class="calc-row">
-        <label><span class="lbl">Nominal interest rate (%):</span>
-          <input type="number" id="fisher-nom" value="5.5" step="0.1" min="0" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Inflation rate (%):</span>
-          <input type="number" id="fisher-inf" value="2.0" step="0.1" style="width:100px;" />
-        </label>
-      </div>
-      <div class="calc-result">
-        <div class="result-main" id="fisher-result">3.5%</div>
-        <div class="result-label">Real Interest Rate</div>
-        <div class="result-sub" id="fisher-sub">Real rate ≈ Nominal rate − Inflation = 5.5% − 2.0% = 3.5%. The Fisher equation corrects for the erosion of purchasing power by inflation.</div>
-      </div>
+      <p class="formula-eq-label" id="fisher-sub">Real rate = 5.5% − 2.0% = 3.5% — the true return after accounting for inflation.</p>
       <script>
       (function(){
         function updCPI(){
@@ -87,23 +118,32 @@
           var cur=parseFloat(document.getElementById('cpi-current').value)||0;
           var cpi=(cur/base)*100;
           var inf=cpi-100;
-          document.getElementById('cpi-result').textContent=cpi.toFixed(1);
-          document.getElementById('cpi-sub').textContent='Inflation rate: '+(inf>=0?'+':'')+inf.toFixed(1)+'% since the base year.';
+          var cell=document.getElementById('cpi-result-cell');
+          cell.textContent=cpi.toFixed(1);
+          cell.className='cell-value '+(inf>0?'fv-red':inf<0?'fv-green':'fv-accent');
+          document.getElementById('cpi-sub').textContent='Inflation rate: '+(inf>=0?'+':'')+inf.toFixed(1)+'% since the base year.'+(inf>5?' High inflation — purchasing power falling rapidly.':inf<0?' Deflation — prices are falling.':'');
         }
         function updFisher(){
           var nom=parseFloat(document.getElementById('fisher-nom').value)||0;
           var inf=parseFloat(document.getElementById('fisher-inf').value)||0;
           var real=nom-inf;
-          var el=document.getElementById('fisher-result');
-          el.textContent=(real>=0?'':'')+real.toFixed(1)+'%';
-          el.style.color=real>=0?'#83c167':'#fc6255';
-          document.getElementById('fisher-sub').textContent='Real rate ≈ Nominal rate − Inflation = '+nom+'% − '+inf+'% = '+real.toFixed(1)+'%. The Fisher equation corrects for the erosion of purchasing power by inflation.';
+          var cell=document.getElementById('fisher-result-cell');
+          cell.textContent=(real>=0?'':'')+real.toFixed(1)+'%';
+          cell.className='cell-value '+(real>0?'fv-green':real<0?'fv-red':'fv-yellow');
+          document.getElementById('fisher-sub').textContent='Real rate = '+nom+'% − '+inf+'% = '+real.toFixed(1)+'%'+(real<0?' — negative real rates mean savers lose purchasing power even in the bank.':real===0?' — savings break even with inflation.'  :' — the true return after accounting for inflation.'  );
         }
-        ['cpi-base','cpi-current'].forEach(function(id){document.getElementById(id).addEventListener('input',updCPI);});
-        ['fisher-nom','fisher-inf'].forEach(function(id){document.getElementById(id).addEventListener('input',updFisher);});
+        ['cpi-base','cpi-current'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',updCPI);});
+        ['fisher-nom','fisher-inf'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',updFisher);});
         updCPI();updFisher();
       })();
       </script>
+    </section>
+
+    <section id="inflation-chart-interactive" class="interactive-block">
+      <h3>Live Irish &amp; EU Inflation Data</h3>
+      <p class="lead">HICP (Harmonised Index of Consumer Prices) annual inflation rates for Ireland and EU27, sourced live from Eurostat.</p>
+      <canvas id="inflation-canvas" style="width:100%;display:block;border-radius:8px;"></canvas>
+      <p class="chart-caption">Source: Eurostat prc_hicp_aind — HICP annual average index (2015=100). Rates calculated year-on-year. Ireland's 2022–23 peak reflects energy prices and post-Covid demand surge.</p>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -157,5 +197,6 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/inflation-chart.js"></script>
 </body>
 </html>

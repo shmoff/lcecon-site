@@ -58,10 +58,12 @@
 
     <section class="section" id="ms-interactive">
       <h2>Interactive: Market Structures — AR, MR &amp; MC</h2>
-      <p class="kicker">Toggle between perfect competition and monopoly to see how market structure changes the firm's price, output, and profit. In monopoly, AR &gt; MR because the firm must lower price to sell more.</p>
+      <p class="kicker">Toggle between market structures. The oligopoly mode demonstrates the kinked demand curve and how it explains price rigidity — a price stuck at P* even when costs change.</p>
       <div class="diagram-wrap">
         <div class="btn-group">
           <button class="btn-toggle ms-mode-btn active" id="ms-btn-pc">Perfect Competition</button>
+          <button class="btn-toggle ms-mode-btn t-green" id="ms-btn-mc">Monopolistic Competition</button>
+          <button class="btn-toggle ms-mode-btn t-yellow" id="ms-btn-oligo">Oligopoly (Kinked Demand)</button>
           <button class="btn-toggle ms-mode-btn t-red" id="ms-btn-monopoly">Monopoly</button>
         </div>
         <div class="diagram-controls" id="ms-pc-ctrl">
@@ -76,7 +78,7 @@
           <span class="legend-item"><span class="legend-swatch" style="background:#58c4dd;"></span> AR (Demand)</span>
           <span class="legend-item"><span class="legend-swatch" style="background:#5cd0b3;"></span> MR</span>
         </div>
-        <p class="diagram-caption">Profit is maximised where MC = MR. The shaded rectangle shows supernormal profit (blue) or a loss (red). In monopoly, Pm &gt; Pc and Qm &lt; Qc — allocative inefficiency.</p>
+        <p class="diagram-caption">Perfect Competition: AR=MR=P (horizontal). Monopolistic Competition: downward AR, SR profit → LR entry erodes it. Oligopoly: kinked demand creates an MR gap — MC can shift within this gap without changing the profit-maximising price (price rigidity). Monopoly: highest price, lowest output, DWL vs competition.</p>
       </div>
       <script>
       (function(){

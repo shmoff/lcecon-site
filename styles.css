@@ -669,3 +669,70 @@ li::marker{
   margin-top:var(--s3); overflow-x:auto;
 }
 .chart-wrap svg{ display:block; width:100%; height:auto; }
+
+/* ── 25. 3B1B Formula visualiser ────────────────────────── */
+.formula-visual{
+  display:flex; align-items:center; flex-wrap:wrap;
+  gap:10px; padding:var(--s3) var(--s4);
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--r-md); margin:var(--s3) 0;
+}
+.formula-cell{
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+}
+.formula-cell .cell-label{
+  font-size:.68rem; color:var(--muted); text-align:center;
+  letter-spacing:.06em; text-transform:uppercase;
+  font-family:"Latin Modern Roman",Georgia,serif;
+}
+.formula-cell .cell-value{
+  background:var(--surface2); border:1.5px solid var(--border-light);
+  border-radius:var(--r-sm); padding:10px 18px;
+  font-size:1.25rem; font-weight:700; min-width:88px;
+  text-align:center; font-family:"Latin Modern Roman",Georgia,serif;
+  transition:color .18s, border-color .18s, background .18s;
+}
+.formula-cell .cell-value.fv-accent{
+  color:var(--accent); border-color:rgba(88,196,221,.5);
+  background:rgba(88,196,221,.06);
+}
+.formula-cell .cell-value.fv-green{
+  color:var(--green); border-color:rgba(131,193,103,.5);
+  background:rgba(131,193,103,.06);
+}
+.formula-cell .cell-value.fv-red{
+  color:var(--red); border-color:rgba(252,98,85,.5);
+  background:rgba(252,98,85,.06);
+}
+.formula-cell .cell-value.fv-yellow{
+  color:var(--yellow); border-color:rgba(240,172,95,.5);
+  background:rgba(240,172,95,.06);
+}
+.formula-cell .cell-value.fv-muted{
+  color:var(--muted);
+}
+.formula-op{
+  font-size:1.5rem; color:var(--subtle); padding:0 4px;
+  margin-top:22px; font-family:"Latin Modern Roman",Georgia,serif;
+  flex-shrink:0;
+}
+.formula-eq-label{
+  font-size:.78rem; color:var(--muted); font-style:italic;
+  margin:2px 0 var(--s3); font-family:"Latin Modern Roman",Georgia,serif;
+}
+
+/* ── 26. Real-world context pills ────────────────────────── */
+.context-pills{
+  display:flex; flex-wrap:wrap; gap:8px; margin:var(--s3) 0;
+}
+.context-pill{
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:6px 12px;
+  font-size:.82rem; color:var(--muted);
+}
+.context-pill strong{ color:var(--text); }
+.context-pill .pill-accent{ color:var(--accent); font-weight:700; }
+.context-pill .pill-green{ color:var(--green); font-weight:700; }
+.context-pill .pill-red{ color:var(--red); font-weight:700; }
+.context-pill .pill-yellow{ color:var(--yellow); font-weight:700; }

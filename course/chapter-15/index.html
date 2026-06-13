@@ -73,6 +73,31 @@
       </div>
     </section>
 
+    <section id="credit-creation-interactive" class="interactive-block">
+      <h3>Interactive: Credit Creation Model</h3>
+      <p class="lead">Adjust the sliders to see how banks create credit through the money multiplier process. Live ECB policy rate shown.</p>
+      <div class="slider-grid">
+        <div class="slider-row">
+          <label>Initial Deposit: <span id="cc-deposit-val">€1,000</span></label>
+          <input type="range" id="cc-deposit" min="100" max="10000" step="100" value="1000">
+        </div>
+        <div class="slider-row">
+          <label>Reserve Ratio: <span id="cc-rrr-val">10%</span></label>
+          <input type="range" id="cc-rrr" min="0" max="20" step="0.5" value="10">
+        </div>
+        <div class="slider-row">
+          <label>Capital Requirement: <span id="cc-capital-val">8%</span></label>
+          <input type="range" id="cc-capital" min="0" max="20" step="1" value="8">
+        </div>
+        <div class="slider-row">
+          <label>Credit Demand: <span id="cc-demand-val">80%</span></label>
+          <input type="range" id="cc-demand" min="0" max="100" step="5" value="80">
+        </div>
+      </div>
+      <canvas id="credit-canvas" style="width:100%;display:block;margin-top:1rem;border-radius:8px;"></canvas>
+      <p class="chart-caption">The money/credit multiplier illustrates how banks expand the money supply. Note: ECB reserve requirement is 1% since Jan 2024 (was 0% from 2019–2024). Capital requirements (Basel III: 8% CET1) also limit lending. This model is illustrative — real credit creation depends on demand, risk appetite, and monetary policy.</p>
+    </section>
+
     <!-- 2) Notes + Worksheet PDFs -->
     <section class="section two">
       <div class="card">
@@ -126,5 +151,6 @@
   </main>
   <script src="/assets/js/econ-utils.js"></script>
   <script src="/assets/js/compound-interest.js"></script>
+  <script src="/assets/js/credit-creation.js"></script>
 </body>
 </html>

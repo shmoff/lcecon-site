@@ -63,48 +63,43 @@
 
     <section class="section" id="budget-interactive">
       <h2>Interactive: Budget Balance Calculator</h2>
-      <p class="kicker">Ireland's 2023 Exchequer outturn (Dept. of Finance). Adjust the sliders to see how changes in revenue or expenditure affect the budget balance.</p>
-      <div class="calc-row">
-        <label><span class="lbl">Income Tax (€bn):</span>
-          <input type="number" id="bud-income-tax" value="28.0" step="0.1" min="0" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Corporation Tax (€bn):</span>
-          <input type="number" id="bud-corp-tax" value="22.6" step="0.1" min="0" style="width:100px;" />
-        </label>
+      <p class="kicker">Ireland's 2023 Exchequer outturn (Dept. of Finance). Adjust the components to see how the balance changes — the formula panel updates live.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s3);">
+        <div>
+          <h3 style="color:var(--green);margin-bottom:var(--s3);font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;">Revenue (T)</h3>
+          <div class="calc-row"><label><span class="lbl">Income Tax (€bn):</span><input type="number" id="bud-income-tax" value="28.0" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">Corporation Tax (€bn):</span><input type="number" id="bud-corp-tax" value="22.6" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">VAT (€bn):</span><input type="number" id="bud-vat" value="18.8" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">Other Revenue (€bn):</span><input type="number" id="bud-other-rev" value="19.1" step="0.1" min="0" style="width:90px;" /></label></div>
+        </div>
+        <div>
+          <h3 style="color:var(--red);margin-bottom:var(--s3);font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;">Expenditure (G)</h3>
+          <div class="calc-row"><label><span class="lbl">Social Protection (€bn):</span><input type="number" id="bud-social" value="27.5" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">Health (€bn):</span><input type="number" id="bud-health" value="20.6" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">Education (€bn):</span><input type="number" id="bud-edu" value="11.9" step="0.1" min="0" style="width:90px;" /></label></div>
+          <div class="calc-row"><label><span class="lbl">Other Expenditure (€bn):</span><input type="number" id="bud-other-exp" value="20.5" step="0.1" min="0" style="width:90px;" /></label></div>
+        </div>
       </div>
-      <div class="calc-row">
-        <label><span class="lbl">VAT (€bn):</span>
-          <input type="number" id="bud-vat" value="18.8" step="0.1" min="0" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Other Revenue (€bn):</span>
-          <input type="number" id="bud-other-rev" value="19.1" step="0.1" min="0" style="width:100px;" />
-        </label>
+      <div class="formula-visual">
+        <div class="formula-cell">
+          <div class="cell-label">Budget Balance</div>
+          <div class="cell-value fv-green" id="bud-balance-cell">+€8.0bn</div>
+        </div>
+        <div class="formula-op">=</div>
+        <div class="formula-cell">
+          <div class="cell-label">Total Revenue (T)</div>
+          <div class="cell-value fv-green" id="bud-rev-cell">€88.5bn</div>
+        </div>
+        <div class="formula-op">−</div>
+        <div class="formula-cell">
+          <div class="cell-label">Total Expenditure (G)</div>
+          <div class="cell-value fv-red" id="bud-exp-cell">€80.5bn</div>
+        </div>
       </div>
-      <div class="calc-row">
-        <label><span class="lbl">Social Protection (€bn):</span>
-          <input type="number" id="bud-social" value="27.5" step="0.1" min="0" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Health (€bn):</span>
-          <input type="number" id="bud-health" value="20.6" step="0.1" min="0" style="width:100px;" />
-        </label>
-      </div>
-      <div class="calc-row">
-        <label><span class="lbl">Education (€bn):</span>
-          <input type="number" id="bud-edu" value="11.9" step="0.1" min="0" style="width:100px;" />
-        </label>
-        <label><span class="lbl">Other Expenditure (€bn):</span>
-          <input type="number" id="bud-other-exp" value="20.5" step="0.1" min="0" style="width:100px;" />
-        </label>
-      </div>
-      <div class="calc-result">
-        <div class="result-main" id="bud-balance">+€8.0bn</div>
-        <div class="result-label" id="bud-label">Budget Surplus</div>
-        <div class="result-sub" id="bud-sub">Total revenue: €88.5bn | Total expenditure: €80.5bn</div>
-      </div>
-      <p class="muted" style="font-size:.8rem;margin-top:8px;font-style:italic;">Source: Department of Finance, Exchequer Statement 2023 (outturn figures, rounded).</p>
+      <p class="formula-eq-label" id="bud-label">Surplus: Revenue exceeds expenditure by €8.0bn (2023 Exchequer outturn)</p>
+      <p class="muted" style="font-size:.8rem;font-style:italic;margin-top:8px;">Source: Department of Finance, Exchequer Statement 2023.</p>
       <script>
       (function(){
-        var ids=['income-tax','corp-tax','vat','other-rev','social','health','edu','other-exp'];
         var revIds=['income-tax','corp-tax','vat','other-rev'];
         var expIds=['social','health','edu','other-exp'];
         function get(id){return parseFloat(document.getElementById('bud-'+id).value)||0;}
@@ -112,21 +107,39 @@
           var rev=revIds.reduce(function(s,id){return s+get(id);},0);
           var exp=expIds.reduce(function(s,id){return s+get(id);},0);
           var bal=rev-exp;
-          var balEl=document.getElementById('bud-balance');
+          var balCell=document.getElementById('bud-balance-cell');
+          var revCell=document.getElementById('bud-rev-cell');
+          var expCell=document.getElementById('bud-exp-cell');
           var lbl=document.getElementById('bud-label');
-          var sub=document.getElementById('bud-sub');
-          balEl.textContent=(bal>=0?'+':'−')+'€'+Math.abs(bal).toFixed(1)+'bn';
-          balEl.style.color=bal>=0?'#83c167':'#fc6255';
-          lbl.textContent=bal>0?'Budget Surplus':bal<0?'Budget Deficit':'Balanced Budget';
-          sub.textContent='Total revenue: €'+rev.toFixed(1)+'bn | Total expenditure: €'+exp.toFixed(1)+'bn';
+          revCell.textContent='€'+rev.toFixed(1)+'bn';
+          expCell.textContent='€'+exp.toFixed(1)+'bn';
+          balCell.textContent=(bal>=0?'+':'−')+'€'+Math.abs(bal).toFixed(1)+'bn';
+          if(bal>0){
+            balCell.className='cell-value fv-green';
+            lbl.textContent='Surplus: Revenue exceeds expenditure by €'+Math.abs(bal).toFixed(1)+'bn';
+          } else if(bal<0){
+            balCell.className='cell-value fv-red';
+            lbl.textContent='Deficit: Expenditure exceeds revenue by €'+Math.abs(bal).toFixed(1)+'bn — government must borrow';
+          } else {
+            balCell.className='cell-value fv-yellow';
+            lbl.textContent='Balanced budget: Revenue exactly equals expenditure';
+          }
         }
-        ids.forEach(function(id){
+        [...revIds,...expIds].forEach(function(id){
           var el=document.getElementById('bud-'+id);
           if(el)el.addEventListener('input',upd);
         });
         upd();
       })();
       </script>
+    </section>
+
+    <section id="fiscal-dashboard-interactive" class="interactive-block">
+      <h3>Live Irish Fiscal Data</h3>
+      <p class="lead">Real-time government budget balance and debt data for Ireland vs EU27 average, sourced directly from Eurostat.</p>
+      <canvas id="fiscal-balance-canvas" style="width:100%;display:block;margin-bottom:1.5rem;border-radius:8px;"></canvas>
+      <canvas id="fiscal-debt-canvas" style="width:100%;display:block;border-radius:8px;"></canvas>
+      <p class="chart-caption">Source: Eurostat gov_10dd_edpt1 — General government deficit/surplus and debt. Updated annually. EU27 average shown for comparison. Ireland's surplus reflects corporation tax receipts from multinational firms.</p>
     </section>
 
     <!-- 2) Notes + Worksheet PDFs -->
@@ -187,5 +200,6 @@
 
     <div class="footer">© LC Econ</div>
   </main>
+  <script src="/assets/js/fiscal-dashboard.js"></script>
 </body>
 </html>
