@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LC Econ | Research Study — live Irish economic data</title>
+  <meta name="description" content="Live Irish economic data for the Leaving Cert Economics research study, sourced directly from the CSO statistical database. Charts, tables and CSV downloads." />
+  <link rel="canonical" href="https://lcecon.ie/research/" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .interactive-block{
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:12px; padding:22px 24px; margin-top:20px;
+    }
+    .interactive-block h3{ margin-top:0; }
+    .lead{ color:var(--muted); margin:6px 0 14px; }
+    .chart-caption{
+      color:var(--muted); font-size:.85rem; margin:12px 0 0;
+      border-top:1px solid var(--border); padding-top:10px;
+    }
+    .data-controls{
+      display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px;
+      margin:0 0 14px;
+    }
+    .data-controls label{ color:var(--muted); font-size:.9rem; }
+    .data-controls select{
+      background:var(--surface2); color:var(--text);
+      border:1px solid var(--border-light); border-radius:8px;
+      padding:6px 10px; font-family:inherit; font-size:.9rem;
+    }
+    .data-controls select:focus{ outline:none; border-color:var(--accent); }
+    .table-wrap{
+      max-height:320px; overflow-y:auto; margin-top:14px;
+      border:1px solid var(--border); border-radius:8px;
+    }
+    table.data-table{ width:100%; border-collapse:collapse; font-size:.9rem; }
+    table.data-table th{
+      position:sticky; top:0; background:var(--surface2); color:var(--accent);
+      text-align:left; padding:8px 12px; border-bottom:1px solid var(--border-light);
+    }
+    table.data-table td{
+      padding:6px 12px; border-bottom:1px solid var(--border); color:var(--text);
+    }
+    table.data-table tr:nth-child(even) td{ background:rgba(46,46,70,.35); }
+    .status-note{
+      color:var(--yellow); font-size:.85rem; margin:0 0 10px; display:none;
+    }
+    .soon .card{ opacity:.75; cursor:default; }
+    .soon-tag{
+      display:inline-block; font-size:.72rem; color:var(--yellow);
+      border:1px solid rgba(240,172,95,.4); border-radius:999px;
+      padding:1px 9px; margin-top:8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrapper">
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/course/">Written Course</a>
+      <a href="/notes/">Notes</a>
+      <a href="/worksheets/">Worksheets</a>
+      <a href="/resources/">Data &amp; Resources</a>
+      <a href="/research/" class="active">Research Study</a>
+      <a href="/grinds/">Grinds</a>
+    </nav>
+
+    <section class="hero">
+      <h1>Research <span class="accent">Study</span></h1>
+      <p>The research study is worth 100 marks — 20% of your final grade. Strong projects are built on reliable, up-to-date evidence. This page gives you live Irish economic data pulled directly from the CSO's statistical database: the same source professional economists use.</p>
+      <div style="margin-bottom: var(--s3);">
+        <span class="tag">100 marks · 20%</span>
+        <span class="tag">Live CSO data</span>
+        <span class="tag">Refreshes automatically</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Using Data Well</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Use official sources</h3>
+          <p>The CSO (Central Statistics Office) is Ireland's national statistical agency. Its figures are the gold standard — examiners notice the difference between official data and a random blog.</p>
+        </div>
+        <div class="card">
+          <h3>Cite precisely</h3>
+          <p>Always name the source, the table, and the date. Each chart below shows its exact citation line — copy the format into your own report.</p>
+        </div>
+        <div class="card">
+          <h3>Read the trend</h3>
+          <p>Don't just state a number. Describe the direction, the turning points, and <em>why</em> they happened — that's where the analysis marks are.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="live-data">
+      <h2>Live Irish Data</h2>
+      <p class="kicker">Fetched live from the CSO statistical database (data.cso.ie) and refreshed automatically as new figures are released. Hover over a chart to read exact values.</p>
+
+      <div class="interactive-block" id="unemployment-block">
+        <h3>Unemployment in Ireland</h3>
+        <p class="lead">The seasonally adjusted monthly unemployment rate, from 1998 to the latest release. Switch age group to compare youth unemployment (15–24) with the overall rate — note how much harder recessions hit young workers.</p>
+        <p class="status-note" id="unemp-status">Fetching live data from the CSO…</p>
+        <div class="data-controls">
+          <label for="unemp-age">Age group:</label>
+          <select id="unemp-age" disabled><option>15 - 74 years</option></select>
+          <button class="btn-toggle" id="unemp-table-btn" type="button">View data table</button>
+          <a class="btn-toggle" href="https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/MUM01/CSV/1.0/en" target="_blank" rel="noopener">Download CSV</a>
+        </div>
+        <canvas id="unemp-canvas" style="width:100%;display:block;border-radius:8px;"></canvas>
+        <div class="table-wrap" id="unemp-table-wrap" style="display:none"></div>
+        <p class="chart-caption">Source: CSO Ireland, PxStat table <strong>MUM01</strong> — Seasonally Adjusted Monthly Unemployment. <span id="unemp-updated"></span> Licensed under CC&nbsp;BY&nbsp;4.0. Cite as: <em>CSO (2026), Seasonally Adjusted Monthly Unemployment (MUM01), data.cso.ie</em>.</p>
+      </div>
+    </section>
+
+    <section class="section soon">
+      <h2>More Live Charts On The Way</h2>
+      <div class="grid">
+        <div class="card"><h3>Inflation (CPI)</h3><p>Price level vs the inflation rate, and why they're not the same thing.</p><span class="soon-tag">coming soon</span></div>
+        <div class="card"><h3>GDP vs GNP vs GNI*</h3><p>Why Ireland's GDP overstates the real economy — and what to use instead.</p><span class="soon-tag">coming soon</span></div>
+        <div class="card"><h3>House Prices &amp; Supply</h3><p>Property price index against new dwelling completions.</p><span class="soon-tag">coming soon</span></div>
+        <div class="card"><h3>Population Pyramid</h3><p>Ireland's age structure, by sex, animated.</p><span class="soon-tag">coming soon</span></div>
+        <div class="card"><h3>Government Debt</h3><p>Gross debt as a percentage of GDP since the crash.</p><span class="soon-tag">coming soon</span></div>
+        <div class="card"><h3>Trade</h3><p>The value of Ireland's merchandise exports and imports.</p><span class="soon-tag">coming soon</span></div>
+      </div>
+    </section>
+
+    <div class="footer">© LC Econ · Chart data: CSO Ireland (CC BY 4.0)</div>
+  </main>
+
+  <script src="/assets/js/cso-data.js"></script>
+  <script src="/assets/js/cso-unemployment.js"></script>
+</body>
+</html>
