@@ -13,15 +13,15 @@
 
 const ALLOWED = new Set([
   'MUM01',           // unemployment (monthly, seasonally adjusted)
-  'CPM13', 'CPM16',  // consumer price index
+  'CPM20',           // consumer price index by commodity group (current, back to 1996)
   'NAQ03',           // GDP and GNP, quarterly
-  'NA001', 'NA002',  // modified GNI (GNI*)
-  'HPM01',           // residential property price index
-  'URA26',           // new dwelling completions
+  'NA001', 'NA002',  // modified GNI (GNI*) — NA001 items include GDP/GNP/GNI/GNI*
+  'HPM09',           // residential property price index (current series)
+  'NDQ01',           // new dwelling completions, quarterly
   'LRM04',           // live register
   'GFQ12', 'GFA12',  // government debt as % of GDP
-  'PEA21',           // population estimates by age and sex
-  'TSA05',           // value of merchandise trade
+  'PEA11',           // population estimates by single year of age and sex, 1926–
+  'TSM01',           // value of merchandise trade: totals + surplus, monthly 1970–
   'EHQ05',           // average earnings
   'SIA01', 'SIA43',  // poverty rates, income distribution
 ]);

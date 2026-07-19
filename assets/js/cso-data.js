@@ -171,11 +171,11 @@ var CsoData = (function () {
 
   var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  /* '202606' → 'Jun 2026', '2026Q1' → '2026 Q1' */
+  /* '202606' → 'Jun 2026'; PxStat quarterly '20254' → '2025 Q4'; annual passes through */
   function fmtPeriod(code) {
     var m = /^(\d{4})(\d{2})$/.exec(code);
     if (m && +m[2] >= 1 && +m[2] <= 12) return MONTHS[+m[2] - 1] + ' ' + m[1];
-    var q = /^(\d{4})Q(\d)$/.exec(code);
+    var q = /^(\d{4})([1-4])$/.exec(code);
     if (q) return q[1] + ' Q' + q[2];
     return code;
   }

@@ -26,8 +26,11 @@ finally each chart module has hardcoded fallback data so the page never breaks.
 |---|---|
 | `functions/api/cso/[matrix].js` | Pages Function proxy: allowlist, JSON-RPC translation, edge caching. Deployed automatically by Cloudflare Pages — any repo with a `/functions` dir gets them, zero config. |
 | `assets/js/cso-data.js` | `CsoData` module: fetch with three-level fallback, JSON-stat 2.0 decoder, localStorage cache, period/date formatters. |
-| `assets/js/cso-unemployment.js` | First chart (MUM01). The template to copy for new charts. |
-| `research/index.html` | The research study page hosting the charts. |
+| `assets/js/cso-chart.js` | `CsoChart` engine: builds each chart's controls (multi-select series pills that double as the legend, statistic/unit toggle, data table, PNG export in dark/light theme), renders multi-series canvas line charts with hover crosshair. |
+| `assets/js/cso-charts-config.js` | One config object per line chart — this is where charts are added. |
+| `assets/js/cso-pyramid.js` | Population pyramid (PEA11): custom renderer with year slider, shares `CsoChart.exportCanvas` for PNG downloads. |
+| `research/index.html` | The research study page hosting the charts (each chart = an `.interactive-block` with a mount `<div>`). |
+| `docs/cso-pipeline.tex` / `.pdf` | Visual one-glance LaTeX documentation of the whole pipeline. |
 
 ## The CSO PxStat API (verified facts)
 
@@ -51,14 +54,23 @@ finally each chart module has hardcoded fallback data so the page never breaks.
 - Flat-index rule (JSON-stat): value index = row-major position over the `id`
   dimension order using `size` — `CsoData.series()` does this arithmetic.
 
-### Table codes in the allowlist
+### Table codes in the allowlist (all verified current, July 2026)
 
-MUM01 (unemployment) · CPM13/CPM16 (CPI) · NAQ03 (GDP/GNP) · NA001/NA002 (GNI*) ·
-HPM01 (house prices) · URA26 (dwelling completions) · LRM04 (Live Register) ·
-GFQ12/GFA12 (gov debt %GDP) · PEA21 (population) · TSA05 (trade) · EHQ05 (earnings)
-· SIA01 (poverty) · SIA43 (income distribution)
+MUM01 (unemployment, monthly SA, 1998–) · CPM20 (CPI by commodity group, 1996–,
+index rebased Dec 2023 **and backcast**, plus annual/monthly % change) · NAQ03
+(quarterly GDP/GNP) · NA001/NA002 (annual — NA001's *items* include GDP, GNP, GNI
+and GNI* in one cube) · HPM09 (RPPI 2005–, 20 property types) · NDQ01 (quarterly
+dwelling completions 2011–, raw + SA) · LRM04 (Live Register) · GFQ12/GFA12 (gov
+debt %GDP) · PEA11 (population by **single year of age** and sex, 1926–) · TSM01
+(monthly trade totals 1970–: exports, imports, surplus, each raw + SA) · EHQ05
+(earnings) · SIA01 (poverty) · SIA43 (income distribution)
 
-Find new codes by browsing data.cso.ie — the table code is shown on every table page.
+**Beware discontinued tables**: the catalogue keeps dead series alive with no
+flag (CPM13 ends 2016, CPM16 ends 2023, HPM01 ends 2019, URA26 ends 2018, TSA05
+ends 2019, PEA21 is by nationality not age). Always check the time dimension's
+last period via ReadMetadata before adopting a table:
+`curl -s ".../PxStat.Data.Cube_API.ReadMetadata/{CODE}/JSON-stat/2.0/en" | jq '.dimension["TLIST(M1)"].category.index | last'`
+Find candidate codes by browsing data.cso.ie — the code is shown on every table page.
 
 ## Caching layers
 
@@ -69,20 +81,29 @@ Find new codes by browsing data.cso.ie — the table code is shown on every tabl
 | localStorage (`cso:{matrix}:{query}`) | 6h, stale kept | Survives CSO/proxy outages |
 | Hardcoded fallback in each chart | — | Page never renders broken; clearly labelled in the UI |
 
-## Adding a new chart (checklist)
+## Adding a new line chart (config-driven — no chart code needed)
 
-1. Find the table on data.cso.ie, note its matrix code.
-2. Add the code to `ALLOWED` in `functions/api/cso/[matrix].js`.
-3. Inspect the cube once: `curl -s ".../ReadDataset/{CODE}/JSON-stat/2.0/en" | jq '.id, .size, (.dimension | map_values(.category.label))'` — note dimension ids and category codes.
-4. Copy `cso-unemployment.js` as the template: set the matrix, the query dims
-   (pin the statistic + any dimension you don't want to expose), and the fixed
-   codes passed to `CsoData.series()`.
-5. Build any dropdowns from `CsoData.categories(ds, dimId)` — never hardcode
-   category lists; they must survive CSO adding categories.
-6. Add the `.interactive-block` section to the page: canvas, controls,
-   status line, table wrap, and a caption with table code + `updated` date +
-   CC BY 4.0 + a copyable citation.
-7. Include a hardcoded fallback series and a status message for the offline case.
+1. Find the table on data.cso.ie; **verify it is current** (see above).
+2. Add its code to `ALLOWED` in `functions/api/cso/[matrix].js`.
+3. Inspect the cube's dimensions once via ReadMetadata (ids, statistic codes,
+   category codes).
+4. Add a config object to `assets/js/cso-charts-config.js`:
+   - `stats`: the statistic codes to expose — >1 creates the unit-toggle buttons.
+     Per-stat formatting: `prefix`/`suffix`/`dp`/`scale` (e.g. €000s → €bn is
+     `scale: 1e-6, prefix: '€', suffix: 'bn'`).
+   - `sliceDim`: the dimension for the multi-select overlay pills;
+     `'STATISTIC'` makes the statistics themselves the pills (e.g. exports vs
+     imports); `null` gives a single series.
+   - `sliceCodes`/`sliceLabels` to curate and rename pills; `defaultSlices` for
+     what's on at load; `fixed` to pin remaining dimensions; `zeroBase` for
+     rate-like series.
+5. Add an `.interactive-block` with a mount `<div id="cc-…">` to
+   `research/index.html`. The engine builds everything else (pills, toggles,
+   table, PNG/CSV buttons, citation line) automatically — pill lists come from
+   live metadata, so they survive the CSO adding categories.
+
+Non-line charts (like the population pyramid) get their own module but should
+reuse `CsoData` for fetching and `CsoChart.exportCanvas` for themed PNG export.
 
 ## Verifying changes
 
