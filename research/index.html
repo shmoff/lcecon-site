@@ -147,12 +147,89 @@
       </div>
     </section>
 
+    <section class="section" id="government">
+      <h2>Government &amp; Taxation</h2>
+      <p class="kicker">Where the State's money comes from and where it goes — the raw material for any research study on fiscal policy, the budget, or public spending.</p>
+
+      <div class="interactive-block">
+        <h3>Tax Revenue by Source</h3>
+        <p class="lead">The composition of Ireland's tax take, one year at a time. Drag the slider back to 1995 and watch corporation tax grow from a side-dish into one of the State's biggest revenue sources — the concentration risk story every fiscal research study should mention.</p>
+        <div id="cc-taxpie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Government Revenue, Expenditure &amp; the Deficit</h3>
+        <p class="lead">Total government revenue against expenditure since 1995, with the surplus/deficit (B9) line showing the gap. The 2010 spike is the banking bailout; the 2020 dip is Covid.</p>
+        <div id="cc-govfin"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Social Protection Expenditure</h3>
+        <p class="lead">What social protection spending actually buys, by function — old age pensions, family supports, unemployment payments and more. Watch unemployment benefits balloon after 2008 and again in 2020.</p>
+        <div id="cc-sppie"></div>
+      </div>
+    </section>
+
+    <section class="section" id="external">
+      <h2>The External Sector</h2>
+      <p class="kicker">Ireland is one of the most globalised economies on Earth — these charts show the flows behind that claim.</p>
+
+      <div class="interactive-block">
+        <h3>Balance of Payments</h3>
+        <p class="lead">The current account and its components, quarterly since 2002. Ireland's swings here are among the most dramatic in the world — multinational imports of intellectual property can move the balance by tens of billions in a single quarter.</p>
+        <div id="cc-bop"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Trade in Services</h3>
+        <p class="lead">Ireland exports more computer services than almost any country on Earth. Overlay the components to see what "services exports" actually means, and flip to imports to see the royalties flowing the other way.</p>
+        <div id="cc-services-trade"></div>
+      </div>
+    </section>
+
+    <section class="section" id="business">
+      <h2>Business Activity</h2>
+      <p class="kicker">The production side of the economy: what Ireland makes, sells and serves, all indexed to 2021 = 100.</p>
+
+      <div class="interactive-block">
+        <h3>Industrial Production — Modern vs Traditional</h3>
+        <p class="lead">The CSO splits industry into the multinational-dominated "modern" sector (pharma, electronics) and the "traditional" sector (food, construction materials). Overlaying them shows Ireland's two-speed industrial economy in a single chart.</p>
+        <div id="cc-industry"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Retail Sales</h3>
+        <p class="lead">The volume of retail sales by business type — the best high-frequency read on Irish consumer spending. Compare supermarkets against bars or department stores.</p>
+        <div id="cc-retail"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Services Activity</h3>
+        <p class="lead">The services side of the economy by sector. Information &amp; communication is the multinational tech story; accommodation &amp; food is the domestic tourism story.</p>
+        <div id="cc-servicesidx"></div>
+      </div>
+    </section>
+
+    <section class="section" id="regional">
+      <h2>Regional Ireland</h2>
+      <p class="kicker">A live map of Ireland's eight regions. The CSO publishes its current housing data at regional level — hover a region for exact figures, drag the slider to animate the years.</p>
+
+      <div class="interactive-block">
+        <h3>Housing Activity by Region</h3>
+        <p class="lead">New dwelling completions (measured by ESB connections) summed per year in each region. Watch construction collapse after 2011 and recover — and how much of it is concentrated in Dublin and the Mid-East commuter belt.</p>
+        <div id="cc-map"></div>
+      </div>
+    </section>
+
     <div class="footer">© LC Econ · Chart data: CSO Ireland (CC BY 4.0)</div>
   </main>
 
   <script src="/assets/js/cso-data.js"></script>
   <script src="/assets/js/cso-chart.js"></script>
+  <script src="/assets/js/cso-pie.js"></script>
   <script src="/assets/js/cso-charts-config.js"></script>
   <script src="/assets/js/cso-pyramid.js"></script>
+  <script src="/assets/js/ie-regions.js"></script>
+  <script src="/assets/js/cso-map.js"></script>
 </body>
 </html>

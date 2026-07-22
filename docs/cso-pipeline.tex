@@ -151,12 +151,15 @@ an \emph{array} of codes (Eurostat uses an object) --- the decoder handles both.
 The engine builds all of this from a $\sim$20-line config; the pill list comes
 from live metadata, so new CSO categories appear automatically.
 
-\section*{5\quad The eight charts and their tables}
+\section*{5\quad The seventeen visualisations and their tables}
+
+Three renderers share one data layer: \textbf{lines} (CsoChart), \textbf{donuts}
+with a year slider (CsoPie), and the \textbf{regional map} (CsoMap).
 
 \begin{center}\small
 \begin{tabular}{@{}llll@{}}
 \toprule
-\textbf{Chart} & \textbf{Table} & \textbf{Span} & \textbf{Pills / toggle}\\
+\textbf{Chart} & \textbf{Table} & \textbf{Span} & \textbf{Pills / toggle / slider}\\
 \midrule
 Unemployment          & MUM01 & 1998-- (monthly) & 3 ages / \% vs '000s\\
 Inflation (CPI)       & CPM20 & 1996-- (monthly) & 14 commodity groups / \% vs index\\
@@ -166,6 +169,16 @@ Dwelling completions  & NDQ01 & 2011-- (quarterly) & 4 house types / raw vs SA\\
 Government debt       & GFQ12 & 2000-- (quarterly) & single series, \% of GDP\\
 Merchandise trade     & TSM01 & 1970-- (monthly) & exports, imports, surplus ($\pm$SA)\\
 Population pyramid    & PEA11 & 1926-- (year slider) & single year of age $\times$ sex\\
+\addlinespace
+Tax revenue (donut)   & ITXS01 & 1995-- (year slider) & top-9 tax heads + Other\\
+Gov.\ rev/exp/deficit & GFA01 & 1995-- (annual) & revenue, expenditure, B9\\
+Social protection (donut) & SPEA02 & 2000-- (year slider) & 9 benefit functions\\
+Balance of payments   & BPQ15 & 2002-- (quarterly) & current acct, goods, services, income\\
+Trade in services     & BPA04 & 2003-- (annual) & 8 components / exports vs imports\\
+Industrial production & MIM05 & 2015-- (monthly) & modern vs traditional sector\\
+Retail sales          & RSM08 & 2021-- (monthly) & 6 business types / volume vs value\\
+Services index        & MSI03 & 2021-- (monthly) & 6 sectors / volume vs value\\
+Housing map           & NDQ08 & 2011-- (map + slider) & 8 NUTS3 regions, GISCO geometry\\
 \bottomrule
 \end{tabular}
 \end{center}

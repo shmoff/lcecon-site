@@ -96,6 +96,104 @@
       zeroBase: true
     },
     {
+      mount: 'cc-govfin', slug: 'government-finance', matrix: 'GFA01',
+      title: 'Government Revenue, Expenditure & Deficit',
+      source: 'General Government Transactions ESA 2010',
+      stats: [
+        { code: 'GFA01', label: '€ billion', prefix: '€', suffix: 'bn', dp: 1, scale: 0.001 }
+      ],
+      sliceDim: 'C03144V03796',
+      sliceCodes: ['01', '09', '21'],
+      sliceLabels: { '01': 'Revenue', '09': 'Expenditure', '21': 'Surplus / Deficit (B9)' },
+      defaultSlices: ['01', '09', '21'],
+      zeroBase: false
+    },
+    {
+      mount: 'cc-bop', slug: 'balance-of-payments', matrix: 'BPQ15',
+      title: 'Balance of Payments (BPM6, quarterly)',
+      source: 'Current, Capital and Financial Account Balances BPM6',
+      stats: [
+        { code: 'BPQ15', label: '€ billion', prefix: '€', suffix: 'bn', dp: 1, scale: 0.001 }
+      ],
+      sliceDim: 'C03142V03794',
+      sliceCodes: ['01', '03', '04', '05'],
+      sliceLabels: {
+        '01': 'Current account', '03': 'Merchandise', '04': 'Services', '05': 'Primary income'
+      },
+      defaultSlices: ['01'],
+      zeroBase: false
+    },
+    {
+      mount: 'cc-services-trade', slug: 'services-trade', matrix: 'BPA04',
+      title: 'Trade in Services',
+      source: 'Exports and Imports of Services',
+      stats: [
+        { code: 'BPA04C01', label: 'Exports', prefix: '€', suffix: 'bn', dp: 1, scale: 0.001 },
+        { code: 'BPA04C02', label: 'Imports', prefix: '€', suffix: 'bn', dp: 1, scale: 0.001 }
+      ],
+      sliceDim: 'C02950V03565',
+      sliceCodes: ['-', '06', '08', '01', '02', '04', '05', '07'],
+      sliceLabels: {
+        '-': 'All services', '06': 'Computer services', '08': 'Business services',
+        '01': 'Transport', '02': 'Tourism & travel', '04': 'Insurance',
+        '05': 'Financial services', '07': 'Royalties & licences'
+      },
+      defaultSlices: ['-', '06'],
+      fixed: { 'C02677V03567': '-01' },
+      zeroBase: true
+    },
+    {
+      mount: 'cc-industry', slug: 'industrial-production', matrix: 'MIM05',
+      title: 'Industrial Production (2021 = 100)',
+      source: 'Industrial Production Volume and Turnover Indices',
+      stats: [
+        { code: 'MIM05C03', label: 'Production (SA)', dp: 1 },
+        { code: 'MIM05C04', label: 'Turnover (SA)', dp: 1 }
+      ],
+      sliceDim: 'C02576V03125',
+      sliceCodes: ['V1100', 'W0780', 'V1300', '21', '26', '10'],
+      sliceLabels: {
+        V1100: 'All industries', W0780: 'Modern sector', V1300: 'Traditional sector',
+        '21': 'Pharmaceuticals', '26': 'Electronics', '10': 'Food products'
+      },
+      defaultSlices: ['W0780', 'V1300'],
+      zeroBase: false
+    },
+    {
+      mount: 'cc-retail', slug: 'retail-sales', matrix: 'RSM08',
+      title: 'Retail Sales Index (2021 = 100)',
+      source: 'Retail Sales Index NACE Rev 2',
+      stats: [
+        { code: 'RSM08C04', label: 'Volume (SA)', dp: 1 },
+        { code: 'RSM08C03', label: 'Value (SA)', dp: 1 }
+      ],
+      sliceDim: 'C02583V03135',
+      sliceCodes: ['V3970', '45', '4711', '4719', '4730', '5630'],
+      sliceLabels: {
+        V3970: 'All retail', '45': 'Motor trades', '4711': 'Supermarkets',
+        '4719': 'Department stores', '4730': 'Automotive fuel', '5630': 'Bars'
+      },
+      defaultSlices: ['V3970'],
+      zeroBase: false
+    },
+    {
+      mount: 'cc-servicesidx', slug: 'services-index', matrix: 'MSI03',
+      title: 'Services Activity Index (2021 = 100)',
+      source: 'Monthly Services Index',
+      stats: [
+        { code: 'MSI03C05', label: 'Volume (SA)', dp: 1 },
+        { code: 'MSI03C03', label: 'Value (SA)', dp: 1 }
+      ],
+      sliceDim: 'C02904V03500',
+      sliceCodes: ['-', 'J', 'I', 'G', 'M', 'H'],
+      sliceLabels: {
+        '-': 'All services', J: 'Information & communication', I: 'Accommodation & food',
+        G: 'Wholesale & retail', M: 'Professional & technical', H: 'Transport & storage'
+      },
+      defaultSlices: ['-', 'J', 'I'],
+      zeroBase: false
+    },
+    {
       mount: 'cc-trade', slug: 'merchandise-trade', matrix: 'TSM01',
       title: 'Merchandise Trade (€bn per month)',
       source: 'Value of Merchandise Trade',
@@ -114,9 +212,35 @@
     }
   ];
 
+  var PIES = [
+    {
+      mount: 'cc-taxpie', slug: 'tax-revenue', matrix: 'ITXS01',
+      title: 'Tax Revenue by Source',
+      source: "Ireland's Tax Statistics",
+      query: { C04052V04814: ['-'] },
+      fixedExtra: { C04052V04814: '-' },
+      catDim: 'STATISTIC',
+      topN: 9,
+      scale: 0.001, prefix: '€', suffix: 'bn', dp: 1,
+      labelClean: function (s) { return s.replace(/\s*\([^)]*\)\s*$/, ''); }
+    },
+    {
+      mount: 'cc-sppie', slug: 'social-protection', matrix: 'SPEA02',
+      title: 'Social Protection Expenditure by Function',
+      source: 'Social Benefits Protection Expenditure by Function',
+      query: { C03908V04660: ['1110000', '1120000', '1130000', '1140000', '1150000', '1160000', '1170000', '1180000', '1200000'] },
+      catDim: 'C03908V04660',
+      scale: 0.001, prefix: '€', suffix: 'bn', dp: 1,
+      labelClean: function (s) { return s.replace(/^Expenditure,\s*/, '').replace(/\s*n\.e\.c\.\s*$/, ''); }
+    }
+  ];
+
   function init() {
     if (typeof CsoChart === 'undefined') return;
     CHARTS.forEach(function (cfg) { CsoChart.create(cfg); });
+    if (typeof CsoPie !== 'undefined') {
+      PIES.forEach(function (cfg) { CsoPie.create(cfg); });
+    }
   }
 
   if (document.readyState === 'loading') {

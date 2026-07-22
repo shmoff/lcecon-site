@@ -24,6 +24,15 @@ const ALLOWED = new Set([
   'TSM01',           // value of merchandise trade: totals + surplus, monthly 1970–
   'EHQ05',           // average earnings
   'SIA01', 'SIA43',  // poverty rates, income distribution
+  'ITXS01',          // Ireland's tax statistics — revenue by tax head, 1995–
+  'SPEA02',          // social protection expenditure by function, 2000–
+  'GFA01',           // general government revenue/expenditure/deficit, annual
+  'BPQ15',           // balance of payments BPM6 balances, quarterly 2002–
+  'BPA04',           // exports and imports of services by component, annual
+  'MIM05',           // industrial production indices (2021=100), monthly
+  'RSM08',           // retail sales index (2021=100), monthly
+  'MSI03',           // services index (2021=100), monthly
+  'NDQ08',           // ESB connections (new dwellings) by NUTS3 region, quarterly
 ]);
 
 const REST = 'https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/';
