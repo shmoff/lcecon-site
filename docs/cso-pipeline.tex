@@ -151,10 +151,18 @@ an \emph{array} of codes (Eurostat uses an object) --- the decoder handles both.
 The engine builds all of this from a $\sim$20-line config; the pill list comes
 from live metadata, so new CSO categories appear automatically.
 
-\section*{5\quad The seventeen visualisations and their tables}
+\section*{5\quad The visualisation suite and its tables}
 
 Three renderers share one data layer: \textbf{lines} (CsoChart), \textbf{donuts}
-with a year slider (CsoPie), and the \textbf{regional map} (CsoMap).
+with a year slider (CsoPie), and the \textbf{regional map} (CsoMap). A third
+build round added twenty more visuals — BoP in depth (BPQ15), reserve assets
+(BPQ18), UK trade and FDI after Brexit (BPQ35/38), energy dependence and demand
+(SEI01/06, TSM10, MEC02), aircraft leasing (ALIA01/03/09) and the international
+investment position and external debt (BPQ26/24) — with written analysis blocks
+on the page. The donut engine gained \texttt{annualize} (quarterly/monthly
+$\to$ annual sums) and \texttt{signed} (magnitude slices, sign in legend) for
+balance-of-payments data. Full inventory: \texttt{cso-data-pipeline.md}. The
+original charts:
 
 \begin{center}\small
 \begin{tabular}{@{}llll@{}}

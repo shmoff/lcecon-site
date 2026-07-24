@@ -63,9 +63,11 @@ var CsoChart = (function () {
     return (stat.prefix || '') + s + (stat.suffix || '');
   }
 
-  /* first period of its year? code shapes: YYYYMM / YYYYQ / YYYY */
+  /* first period of its year? code shapes: YYYYMM / YYYYQ / YYYYQn / YYYY */
   function firstOfYear(code) {
-    if (code.length === 6) return code.slice(4) === '01';
+    if (code.length === 6) {
+      return code.charAt(4) === 'Q' ? code.slice(4) === 'Q1' : code.slice(4) === '01';
+    }
     if (code.length === 5) return code.slice(4) === '1';
     return true;
   }

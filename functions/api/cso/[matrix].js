@@ -33,6 +33,14 @@ const ALLOWED = new Set([
   'RSM08',           // retail sales index (2021=100), monthly
   'MSI03',           // services index (2021=100), monthly
   'NDQ08',           // ESB connections (new dwellings) by NUTS3 region, quarterly
+  'TSM10',           // merchandise trade by commodity and country, monthly 2015–
+  'BPQ18',           // reserve assets BPM6, quarterly 2003–
+  'BPQ35',           // current account with the UK: merchandise & services, 2016–
+  'BPQ38',           // foreign direct investment with the UK, 2017–
+  'ALIA01', 'ALIA03', 'ALIA09',  // aircraft leasing: employment, P&L, lease income by country
+  'MEC02',           // data centres metered electricity consumption, quarterly
+  'SEI01', 'SEI06',  // energy balance and fuel consumption by sector (SEAI data)
+  'BPQ26', 'BPQ24',  // international investment position; gross external debt
 ]);
 
 const REST = 'https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/';

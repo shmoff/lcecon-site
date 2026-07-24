@@ -60,32 +60,71 @@ var CsoPie = (function () {
       return cfg.labelClean ? cfg.labelClean(s) : s;
     }
 
-    /* slices for the selected year: [{label, value, color}] sorted desc,
-       with top-N + Other when configured */
-    function slicesFor(yearCode) {
-      var rows = [];
-      cats.forEach(function (c) {
-        var fixed = {};
-        fixed[cfg.catDim] = c.code;
-        var k;
-        for (k in (cfg.fixedExtra || {})) fixed[k] = cfg.fixedExtra[k];
-        var series = CsoData.series(ds, fixed);
-        for (var i = 0; i < series.length; i++) {
-          if (series[i].code === yearCode) {
-            if (series[i].value != null && series[i].value > 0) {
-              rows.push({ label: cleanLabel(c.label), value: series[i].value });
-            }
-            break;
-          }
+    /* time series for one category, summing across any array-valued fixedExtra
+       dims (e.g. petroleum + gas + coal commodity codes) */
+    function seriesSum(catCode) {
+      var fixedSets = [{}];
+      fixedSets[0][cfg.catDim] = catCode;
+      var k;
+      for (k in (cfg.fixedExtra || {})) {
+        var codes = Array.isArray(cfg.fixedExtra[k]) ? cfg.fixedExtra[k] : [cfg.fixedExtra[k]];
+        var next = [];
+        fixedSets.forEach(function (fs) {
+          codes.forEach(function (c) {
+            var copy = {}, kk;
+            for (kk in fs) copy[kk] = fs[kk];
+            copy[k] = c;
+            next.push(copy);
+          });
+        });
+        fixedSets = next;
+      }
+      var acc = null;
+      fixedSets.forEach(function (fs) {
+        var s = CsoData.series(ds, fs);
+        if (!acc) {
+          acc = s.map(function (p) { return { code: p.code, value: p.value }; });
+        } else {
+          s.forEach(function (p, i) {
+            if (p.value != null) acc[i].value = (acc[i].value || 0) + p.value;
+          });
         }
       });
-      rows.sort(function (a, b) { return b.value - a.value; });
+      return acc || [];
+    }
+
+    /* value for one category at a period key (a year when annualize is on) */
+    function valueFor(catCode, periodKey) {
+      var s = seriesSum(catCode);
+      if (cfg.annualize) {
+        var sum = 0, has = false;
+        s.forEach(function (p) {
+          if (p.value != null && p.code.slice(0, 4) === periodKey) { sum += p.value; has = true; }
+        });
+        return has ? sum : null;
+      }
+      for (var i = 0; i < s.length; i++) if (s[i].code === periodKey) return s[i].value;
+      return null;
+    }
+
+    /* slices for the selected period, sorted by magnitude, top-N + Other when
+       configured. With cfg.signed, slice sizes use |value| (sign in legend) —
+       a pie of signed balances would otherwise mislead. */
+    function slicesFor(periodKey) {
+      var rows = [];
+      cats.forEach(function (c) {
+        var v = valueFor(c.code, periodKey);
+        if (v == null) return;
+        if (cfg.signed ? v === 0 : v <= 0) return;
+        rows.push({ label: cleanLabel(c.label), value: v, size: Math.abs(v) });
+      });
+      rows.sort(function (a, b) { return b.size - a.size; });
       if (cfg.topN && rows.length > cfg.topN + 1) {
         var top = rows.slice(0, cfg.topN);
         var rest = rows.slice(cfg.topN);
-        var other = 0;
-        rest.forEach(function (r) { other += r.value; });
-        top.push({ label: 'Other (' + rest.length + ' heads)', value: other, other: true });
+        var ov = 0, os = 0;
+        rest.forEach(function (r) { ov += r.value; os += r.size; });
+        top.push({ label: 'Other (' + rest.length + ')', value: ov, size: os, other: true });
         rows = top;
       }
       rows.forEach(function (r, i) {
@@ -112,8 +151,8 @@ var CsoPie = (function () {
 
       var year = years[yearIdx];
       var slices = slicesFor(year.code);
-      var total = 0;
-      slices.forEach(function (s) { total += s.value; });
+      var total = 0, totalValue = 0;
+      slices.forEach(function (s) { total += s.size; totalValue += s.value; });
       if (!total) return;
 
       ctx.fillStyle = theme.bg;
@@ -125,7 +164,7 @@ var CsoPie = (function () {
       /* donut */
       var a0 = -Math.PI / 2;
       slices.forEach(function (s, i) {
-        var frac = s.value / total;
+        var frac = s.size / total;
         var a1 = a0 + frac * Math.PI * 2;
         var mid = (a0 + a1) / 2;
         var off = (hoverSlice === i && !forExport) ? 7 : 0;
@@ -142,14 +181,14 @@ var CsoPie = (function () {
         a0 = a1;
       });
 
-      /* centre: total + year */
+      /* centre: total (net when signed) + year */
       ctx.fillStyle = theme.text;
       ctx.textAlign = 'center';
       ctx.font = 'bold ' + Math.round(17 * f) + 'px ' + CsoChart.FONT;
-      ctx.fillText(fmtVal(total, cfg), cx, cy - 2);
+      ctx.fillText(fmtVal(totalValue, cfg), cx, cy - 2);
       ctx.fillStyle = theme.muted;
       ctx.font = Math.round(12 * f) + 'px ' + CsoChart.FONT;
-      ctx.fillText(year.label, cx, cy + 17 * f);
+      ctx.fillText((cfg.signed ? 'net · ' : '') + year.label, cx, cy + 17 * f);
 
       /* title */
       ctx.fillStyle = theme.text;
@@ -166,11 +205,12 @@ var CsoPie = (function () {
         ctx.fillStyle = s.color;
         ctx.fillRect(lx, y - 8 * f, 9 * f, 9 * f);
         ctx.fillStyle = (hoverSlice === i && !forExport) ? theme.text : theme.muted;
-        var pct = (s.value / total * 100).toFixed(1);
+        var pct = (s.size / total * 100).toFixed(1);
         var name = s.label.length > 38 ? s.label.slice(0, 37) + '…' : s.label;
         ctx.fillText(name, lx + 15 * f, y);
         ctx.textAlign = 'right';
-        ctx.fillText(fmtVal(s.value, cfg) + '  (' + pct + '%)', W - 14 * f, y);
+        var valTxt = (cfg.signed && s.value > 0 ? '+' : '') + fmtVal(s.value, cfg);
+        ctx.fillText(valTxt + '  (' + pct + '%)', W - 14 * f, y);
         ctx.textAlign = 'left';
       });
 
@@ -198,9 +238,10 @@ var CsoPie = (function () {
         var ang = Math.atan2(dy, dx);
         var a = ang < -Math.PI / 2 ? ang + Math.PI * 2 : ang;
         var slices = slicesFor(years[yearIdx].code);
+        var tot = slices.reduce(function (t, s) { return t + s.size; }, 0);
         var acc = -Math.PI / 2;
         for (var i = 0; i < slices.length; i++) {
-          var next = acc + (slices[i].value / slices.reduce(function (t, s) { return t + s.value; }, 0)) * Math.PI * 2;
+          var next = acc + (slices[i].size / tot) * Math.PI * 2;
           if (a >= acc && a < next) { hit = i; break; }
           acc = next;
         }
@@ -212,7 +253,17 @@ var CsoPie = (function () {
       ds = dataset;
       var tDim = null;
       ds.id.forEach(function (d) { if (/^TLIST/.test(d)) tDim = d; });
-      years = CsoData.categories(ds, tDim);
+      var tc = CsoData.categories(ds, tDim);
+      if (cfg.annualize) {
+        var seen = {};
+        years = [];
+        tc.forEach(function (c) {
+          var y = c.code.slice(0, 4);
+          if (!seen[y]) { seen[y] = 1; years.push({ code: y, label: y }); }
+        });
+      } else {
+        years = tc;
+      }
       yearIdx = years.length - 1;
       cats = CsoData.categories(ds, cfg.catDim).filter(function (c) {
         return !(cfg.excludeCodes && cfg.excludeCodes.indexOf(c.code) >= 0);

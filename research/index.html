@@ -52,6 +52,14 @@
     }
     table.data-table tr:nth-child(even) td{ background:rgba(46,46,70,.35); }
     .status-note{ color:var(--yellow); font-size:.85rem; margin:0 0 10px; display:none; }
+    .analysis{
+      border-left:3px solid var(--accent); background:var(--surface2);
+      border-radius:0 10px 10px 0; padding:14px 18px; margin-top:20px;
+    }
+    .analysis h4{ margin:0 0 8px; color:var(--accent); font-size:1rem; }
+    .analysis p{ color:var(--text); font-size:.92rem; margin:0 0 10px; }
+    .analysis p:last-child{ margin-bottom:0; }
+    .analysis .ext-note{ color:var(--yellow); font-size:.85rem; }
   </style>
 </head>
 <body>
@@ -175,9 +183,45 @@
       <p class="kicker">Ireland is one of the most globalised economies on Earth — these charts show the flows behind that claim.</p>
 
       <div class="interactive-block">
-        <h3>Balance of Payments</h3>
-        <p class="lead">The current account and its components, quarterly since 2002. Ireland's swings here are among the most dramatic in the world — multinational imports of intellectual property can move the balance by tens of billions in a single quarter.</p>
+        <h3>Balance of Payments — the Three Accounts</h3>
+        <p class="lead">The current, capital and financial account balances, quarterly since 2002. By construction the three (plus errors and omissions) sum to zero — every trade surplus is matched by financial flows the other way.</p>
         <div id="cc-bop"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Account Balances — Composition View</h3>
+        <p class="lead">The same three balances as annual totals in donut form. Because balances carry signs, slice sizes show <em>magnitude</em> and the legend carries the sign (+/−); the centre shows the net. A deficit year looks very different here than on the line chart.</p>
+        <div id="cc-bop-pie"></div>
+      </div>
+
+      <div class="analysis">
+        <h4>Reading the two visuals together</h4>
+        <p>The <strong>line chart</strong> shows dynamics: when the current account flips sign (2008–2013 deficits, the wild 2015–2021 swings from multinational IP moves), and how the financial account mirrors it. The <strong>donut</strong> shows structure: in any one year, which account dominates the flows. Use the line to describe <em>change</em> and the donut to describe <em>composition</em> — a research study that does both scores on analysis, not description.</p>
+        <p>Note: a pie of signed balances is inherently tricky — a small net figure can hide two huge offsetting components. That is itself the Irish story: enormous gross flows, modest net positions.</p>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Inside the Current Account</h3>
+        <p class="lead">Merchandise, services, primary income and secondary income, quarterly. Ireland's pattern is unique: huge merchandise and services surpluses, offset by an enormous primary income deficit as multinational profits flow out.</p>
+        <div id="cc-bop-cur"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Current Account Composition by Year</h3>
+        <p class="lead">The same four components as annual donuts — drag the slider to watch the merchandise surplus and the profit outflows both balloon after 2015.</p>
+        <div id="cc-bop-cur-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Inside the Financial Account</h3>
+        <p class="lead">Direct, portfolio and other investment flows. These are the gross cross-border capital movements behind the headline balance — routinely ten times the size of the "real" economy flows.</p>
+        <div id="cc-bop-fin"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Financial Account Composition by Year</h3>
+        <p class="lead">Annual donut of the financial account's three channels. The capital account has no published sub-components in this CSO table, so it appears only in the headline charts above.</p>
+        <div id="cc-bop-fin-pie"></div>
       </div>
 
       <div class="interactive-block">
@@ -207,6 +251,140 @@
         <h3>Services Activity</h3>
         <p class="lead">The services side of the economy by sector. Information &amp; communication is the multinational tech story; accommodation &amp; food is the domestic tourism story.</p>
         <div id="cc-servicesidx"></div>
+      </div>
+    </section>
+
+    <section class="section" id="reserves">
+      <h2>Reserve Assets — Trade, the Euro and Why Ireland Holds So Little</h2>
+      <p class="kicker">Quarterly official reserve assets since 2003, by component. Small numbers, big story.</p>
+
+      <div class="interactive-block">
+        <h3>Ireland's Official Reserves</h3>
+        <p class="lead">Total reserves and their components: foreign exchange, Special Drawing Rights, the IMF reserve position, gold and other assets. Note the two step-jumps in SDRs — the IMF's global allocations of 2009 and 2021.</p>
+        <div id="cc-reserves"></div>
+      </div>
+
+      <div class="analysis">
+        <h4>The narrative: why a €500bn trading economy holds only a few billion in reserves</h4>
+        <p><strong>Before the euro</strong>, reserves were the Central Bank's ammunition: Ireland ran persistent trade deficits into the 1980s, and defending the punt inside the European Monetary System meant holding foreign currency to intervene when the exchange rate came under pressure — most dramatically in the 1992–93 currency crisis, which ended in devaluation. In that world there was a direct mechanical link between the trade balance, capital flight and the reserves.</p>
+        <p><strong>Monetary union broke that link.</strong> Since 1999 Ireland has no exchange rate to defend against its main trading partners: exchange-rate management moved to the ECB, which pools the euro area's reserves (each national central bank transferred a share, and the rest of what it holds is managed under ECB rules). A trade surplus with the US no longer accumulates as Irish official reserves — it shows up as private financial flows in the financial account above, while imbalances <em>within</em> the euro system settle automatically through the TARGET2 payment system rather than through reserves.</p>
+        <p>That is why the chart shows a few billion rather than the hundreds of billions a similarly open Asian economy might hold, and why its movements are dominated by administrative events — the IMF's SDR allocations in 2009 and 2021 (clearly visible as steps), Ireland's IMF programme position after 2010, and valuation changes — rather than by the trade cycle. The contrast between this chart and the merchandise trade chart above it is the single sharpest illustration on this page of what joining a currency union actually means.</p>
+        <p><strong>Exam angle:</strong> this is the loss-of-independent-monetary-policy argument made visible — the cost side of euro membership (no devaluation tool, reserves pooled) against the benefit side (no currency crises with partners, lower transaction costs, credibility).</p>
+        <p class="ext-note">External data note: TARGET2 balances and the Central Bank of Ireland's full reserve template are published by the Central Bank and the ECB, not on data.cso.ie — quarterly reserves here are the CSO's BPM6 series (BPQ18). Pre-2003 reserve history also sits outside PxStat.</p>
+      </div>
+    </section>
+
+    <section class="section" id="uk">
+      <h2>Ireland &amp; the UK after Brexit</h2>
+      <p class="kicker">The UK left the EU single market on 1 January 2021. These charts track what happened to the closest trading relationship Ireland has — sourced from the CSO's dedicated UK series.</p>
+
+      <div class="interactive-block">
+        <h3>Trade with the UK</h3>
+        <p class="lead">Exports to and imports from the UK, quarterly since 2016 — before and after the Trade and Cooperation Agreement. Toggle between exports and imports and overlay merchandise against services to see which side absorbed the regulatory shock.</p>
+        <div id="cc-uk-trade"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>What We Sell to the UK</h3>
+        <p class="lead">The component mix of Irish exports to the UK, year by year. Drag from 2016 to today to watch the composition shift.</p>
+        <div id="cc-uk-exp-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>What We Buy from the UK</h3>
+        <p class="lead">The same donut for imports — the side where Brexit bit hardest, as UK goods faced new customs formalities and Irish supply chains re-routed to the continent.</p>
+        <div id="cc-uk-imp-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Foreign Direct Investment with the UK</h3>
+        <p class="lead">Irish direct investment in the UK against UK direct investment in Ireland, quarterly since 2017. FDI is the slow-moving structural side of the relationship — compare its stability with the volatility of the trade flows above.</p>
+        <div id="cc-uk-fdi"></div>
+      </div>
+
+      <div class="analysis">
+        <h4>Reading the Brexit story</h4>
+        <p>The pattern to look for: <strong>imports from the UK</strong> flattened after 2021 as customs checks, rules-of-origin and SPS requirements raised the cost of the land bridge and UK sourcing — Irish supermarkets and manufacturers switched to EU suppliers. <strong>Exports to the UK</strong> held up better (the UK applied controls more slowly, and food exports like beef and dairy had few alternatives), while <strong>services</strong> — untouched by the customs border but affected by regulatory divergence — grew in relative importance. The donuts make the mix shift visible; the line chart shows the levels never collapsed. A strong research study contrasts the <em>predicted</em> collapse with the <em>actual</em> reorientation, and notes the Northern Ireland Protocol/Windsor Framework kept North–South trade frictionless — one reason all-island trade boomed after 2021.</p>
+      </div>
+    </section>
+
+    <section class="section" id="energy">
+      <h2>Energy — Dependence, Mix and Demand</h2>
+      <p class="kicker">How reliant is Ireland on imported energy, on fossil fuels, and where does the demand come from? SEAI's national energy data, republished by the CSO, plus the CSO's own electricity metering.</p>
+
+      <div class="interactive-block">
+        <h3>Who We Buy Energy From</h3>
+        <p class="lead">Imports of coal, petroleum and natural gas by country of origin, annual totals. The UK's dominance is the striking feature — most of Ireland's gas arrives through interconnectors from Britain, and much refined fuel likewise.</p>
+        <div id="cc-energy-import-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>The Fuel Mix</h3>
+        <p class="lead">Primary energy supply by fuel since 1990. Drag the slider: coal and peat shrink, renewables grow — but oil and gas still dominate. This is the gap between Ireland's climate targets and its current energy reality.</p>
+        <div id="cc-energy-mix-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Energy Consumption by Sector</h3>
+        <p class="lead">Final energy consumption (all fuels, ktoe) by sector since 1990 — households, transport, industry, services and agriculture against the national total.</p>
+        <div id="cc-energy-sectors"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Data Centres vs Everyone Else</h3>
+        <p class="lead">Quarterly metered electricity consumption: data centres against all other customers. Data centres' share of Irish electricity is among the highest in the world — overlay the two series and watch the gap close.</p>
+        <div id="cc-datacentres"></div>
+      </div>
+
+      <div class="analysis">
+        <h4>How dependent are we?</h4>
+        <p>Three findings fall out of these charts. <strong>First</strong>, import dependence: Ireland produces little indigenous energy (Corrib gas is declining, peat is gone), so most primary energy is imported — and the country donut shows how concentrated the supply lines are on the UK, a dependence Brexit made strategically uncomfortable. <strong>Second</strong>, the fuel mix is still roughly four-fifths fossil despite wind's rapid growth — renewables show up strongly in <em>electricity</em>, but electricity is only about a fifth of final energy; transport and home heating remain oil- and gas-heavy. <strong>Third</strong>, demand growth is now driven by data centres, which pits industrial policy against climate targets — a genuinely contested policy question with data on both sides.</p>
+        <p class="ext-note">External data note: energy as a share of national output, emissions intensity, and electricity-market prices need SEAI's full Energy in Ireland report, the EPA and SEMO respectively — flagged here because they sit outside data.cso.ie. The energy tables on this page (SEI01/SEI06) are SEAI data to 2024, republished by the CSO annually.</p>
+      </div>
+    </section>
+
+    <section class="section" id="aircraft">
+      <h2>Aircraft Leasing — Ireland's Strangest Export Industry</h2>
+      <p class="kicker">More than half the world's leased commercial aircraft are managed from Ireland. The CSO publishes a dedicated statistical series on the sector — almost nobody knows it exists.</p>
+
+      <div class="interactive-block">
+        <h3>The Sector's Profit &amp; Loss</h3>
+        <p class="lead">Income, expenditure and profits of Irish-resident aircraft leasing companies since 2013. Note the Covid shock in 2020–21 — airlines stopped paying leases — and the Russian aircraft write-offs of 2022 visible in gains/losses.</p>
+        <div id="cc-aircraft"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Lease Income by Customer Country</h3>
+        <p class="lead">Where the lease payments come from — the donut shows the industry's global customer base, with China and the US consistently at the top. Drag to 2022 to see Russia vanish from the mix after sanctions.</p>
+        <div id="cc-aircraft-pie"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>A Tiny Employer, A Giant Balance Sheet</h3>
+        <p class="lead">The sector's employment against its average earnings. A few thousand people manage hundreds of billions of euro in aircraft assets — the extreme case of Ireland's high-value, low-employment multinational model, and a big contributor to the GDP–GNI* gap explained above.</p>
+        <div id="cc-aircraft-emp"></div>
+      </div>
+    </section>
+
+    <section class="section" id="iiped">
+      <h2>International Investment Position &amp; External Debt</h2>
+      <p class="kicker">The stock counterpart to all the flows above: what Ireland owns abroad, what the world owns here, and what is owed to whom.</p>
+
+      <div class="interactive-block">
+        <h3>International Investment Position</h3>
+        <p class="lead">Foreign assets, foreign liabilities and the net position, quarterly since 2012. Ireland's gross positions are among the largest on Earth relative to its economy — overlay direct and portfolio investment to see the IFSC and multinational structures behind them. The persistent negative net position is itself a research topic.</p>
+        <div id="cc-iip"></div>
+      </div>
+
+      <div class="interactive-block">
+        <h3>Gross External Debt by Sector</h3>
+        <p class="lead">Who owes Ireland's external debt: government, banks, the Central Bank, other sectors (where the IFSC lives) and intra-company direct investment debt. Government's slice tells the bailout story; the "other sectors" line shows why headline external debt says little about national solvency.</p>
+        <div id="cc-extdebt"></div>
+      </div>
+
+      <div class="analysis">
+        <h4>Using stock data well</h4>
+        <p>Flows (the BoP) and stocks (the IIP and external debt) answer different questions. A research study on "is Irish external debt sustainable?" must separate debt owed by the State (small, post-2013 declining) from debt sitting in IFSC vehicles and multinational structures (enormous, but matched by assets on the other side of the balance sheet). The sector split above is exactly that separation — quote it rather than the scary headline total.</p>
       </div>
     </section>
 
